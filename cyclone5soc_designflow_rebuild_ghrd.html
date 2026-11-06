@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
+	<meta name="created" content="2023-05-01T10:38:23.422896518"/>
+	<meta name="changed" content="2023-05-01T11:48:12.227009917"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.79in }
+		p { margin-bottom: 0.1in; background: transparent }
+	</style>
+</head>
+<body lang="en-US" dir="ltr"><p style="margin-bottom: 0in; line-height: 100%">
+Cyclone 5 SoC <font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">設計流程
+– </span></font></font></span></font>Rebuild Quartus Project</p>
+<ul>
+	<li><p style="margin-bottom: 0in; line-height: 100%">boot From SD
+	Card</p>
+	<ul>
+		<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">環境設定</span></font></font></span></font>,<font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">假設</span></font></font></span></font>Project<font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">是放在</span></font></font></span></font>/home/Projects</p>
+		<ul>
+			<p style="margin-bottom: 0in; line-height: 100%">cd ~/Projects</p>
+			<p style="margin-bottom: 0in; line-height: 100%">mkdir
+			cv_example.sdmmc</p>
+			<p style="margin-bottom: 0in; line-height: 100%">cd
+			cv_example.sdmmc</p>
+			<p style="margin-bottom: 0in; line-height: 100%">export
+			TOP_FOLDER=`pwd`</p>
+		</ul>
+		<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">下載
+		</span></font></font></span></font>Arrow sockit <font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">的參考設計並
+		</span></font></font></span></font>compile.</p>
+		<ul>
+			<p style="margin-bottom: 0in; line-height: 100%">cd $TOP_FOLDER</p>
+			<p style="margin-bottom: 0in; line-height: 100%">git clone
+			<a href="https://github.com/arrow-socfpga/arrow-sockit-ghrd.git">https://github.com/arrow-socfpga/arrow-sockit-ghrd.git</a></p>
+			<p style="margin-bottom: 0in; line-height: 100%">cd
+			arrow-sockit-ghrd</p>
+			<p style="margin-bottom: 0in; line-height: 100%">git check
+			sockit-ghrd-19.1</p>
+			<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">打開
+			</span></font></font></span></font>Quartus Prime Standard <font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">並開啟
+			</span></font></font></span></font><font color="#c9211e">arrow-sockit-ghrd</font>
+			<font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">裡面的
+			</span></font></font></span></font><font color="#c9211e">sockit_ghrd.qpf
+			</font>
+			</p>
+			<li><p style="margin-bottom: 0in; line-height: 100%"><img src="cyclone5soc_designflow_html_92a56ca9dd9e2381.gif" name="Image1" align="left" width="629" height="452">
+  <br clear="left"/>
+</img>
+<font size="2" style="font-size: 10pt">L<img src="cyclone5soc_designflow_html_a74c05b9d4989b2b.gif" name="Image2" align="left" width="251" height="352" border="0"/>
+unch
+			IP upgrade Tool…</font><br clear="left"/>
+
+			</p>
+			<li><p style="margin-bottom: 0in; line-height: 100%"><font size="2" style="font-size: 10pt">Perform
+			Automatic Upgrade</font></p>
+		</ul>
+	</ul>
+</ul>
+<ul>
+	<li><p style="margin-bottom: 0in; line-height: 100%"><img src="cyclone5soc_designflow_html_440e7ceafc1b2a1e.gif" name="Image3" align="left" width="431" height="167">
+  <br clear="left"/>
+</img>
+<font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">開啟
+	</span></font></font><font size="2" style="font-size: 10pt">Platform
+	Designer (Quartus </font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">上方工具列</span></font></font><font size="2" style="font-size: 10pt">,
+	</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">找到
+	</span></font></font><font size="2" style="font-size: 10pt">Tools →
+	Platform Designer) </font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">並打開
+	</span></font></font><font size="2" style="font-size: 10pt"><font color="#c9211e">sockit_ghrd.qsys</font></font></p>
+</ul>
+<p style="margin-bottom: 0in; line-height: 100%"><img src="cyclone5soc_designflow_html_832036f84bb47036.gif" name="Image4" align="left" width="621" height="342" border="0"/>
+<br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<ul>
+	<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">我們先不到去動這邊的設計</span></font></font><font size="2" style="font-size: 10pt">,</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">因此我們直接按
+	</span></font></font><font size="2" style="font-size: 10pt">Generate
+	HDL. (</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">有興趣的人可以去看
+	如何<a href="add_ip_connect_cpu.html">增加 </a></span></font></font><font size="2" style="font-size: 10pt"><a href="add_ip_connect_cpu.html">IP
+	</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">到
+	</span></font></font><font size="2" style="font-size: 10pt">Platform
+	Designer </font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">跟
+	</span></font></font><font size="2" style="font-size: 10pt">CPU </font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">連接</a></span></font></font><font size="2" style="font-size: 10pt">)</font></p>
+	<li><p style="margin-bottom: 0in; line-height: 100%"><font size="2" style="font-size: 10pt">Generate</font></p>
+	<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">跑<img src="cyclone5soc_designflow_html_e75942bbfcdbeabe.gif" name="Image5" align="left" width="411" height="288">
+  <br clear="left"/>
+</img>
+完後</span></font></font><font size="2" style="font-size: 10pt">,</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">請按
+	</span></font></font><font size="2" style="font-size: 10pt">close </font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">跟
+	</span></font></font><font size="2" style="font-size: 10pt">Finish.</font></p>
+	<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">設定如何產生
+	</span></font></font><font size="2" style="font-size: 10pt">RBF </font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">檔</span></font></font><font size="2" style="font-size: 10pt">.</font></p>
+	<ul>
+		<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">在藍色的區域點滑鼠右鍵
+		→ 選 </span></font></font><font size="2" style="font-size: 10pt">Device</font></p>
+		<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">選<img src="cyclone5soc_designflow_html_46f9d8f37098c459.gif" name="Image7" align="left" width="265" height="317">
+  <br clear="left"/>
+</img>
+
+		</span></font></font><font size="2" style="font-size: 10pt">Device
+		and Pin Options</font></p>
+		<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">選<img src="cyclone5soc_designflow_html_69759fa7de3f6d40.gif" name="Image8" align="left" width="525" height="406">
+  <br clear="left"/>
+</img>
+
+		</span></font></font><font size="2" style="font-size: 10pt">Programming
+		Files → </font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">將
+		</span></font></font><font size="2" style="font-size: 10pt">Raw
+		Binary File(.rbf) </font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">打勾
+		→ </span></font></font><font size="2" style="font-size: 10pt">OK
+		→ OK </font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">退回
+		</span></font></font><font size="2" style="font-size: 10pt">Quartus
+		</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">主要畫面</span></font></font></p>
+		<p style="margin-bottom: 0in; line-height: 100%"> <img src="cyclone5soc_designflow_html_18fe96518ee8d87a.gif" name="Image9" align="left" width="450" height="355">
+  <br clear="left"/>
+</img>
+
+		</p>
+	</ul>
+	<p style="margin-bottom: 0in; line-height: 100%"><img src="cyclone5soc_designflow_html_b7a222d5b94734ec.gif" name="Image6" align="left" width="29" height="26" border="0"/>
+</p>
+	<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">直接按上方
+	    的 </span></font></font><font size="2" style="font-size: 10pt">Icon
+	</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">並</span></font></font><font size="2" style="font-size: 10pt">Compile
+	</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">整個
+	</span></font></font><font size="2" style="font-size: 10pt">Project.
+	</font>
+	</p>
+</ul>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<ul>
+	<li><p style="margin-bottom: 0in; line-height: 100%"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">透過以上的步驟</span></font></font><font size="2" style="font-size: 10pt">,
+	</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">我們可以在這一個
+	</span></font></font><font size="2" style="font-size: 10pt">Project
+	</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">資料夾裡面找到
+	</span></font></font><font size="2" style="font-size: 10pt">Output
+	Files </font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">這一個資料夾</span></font></font><font size="2" style="font-size: 10pt">,
+	</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">裡面會有
+	</span></font></font><font size="2" style="font-size: 10pt">sockit_ghrd.rbf
+	</font><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN">這一個檔案</span></font></font></p>
+	<li><p style="margin-bottom: 0in; line-height: 100%"></p>
+</ul>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+</body>
+</html>

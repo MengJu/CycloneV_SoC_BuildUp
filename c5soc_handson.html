@@ -1,0 +1,2470 @@
+<!DOCTYPE html>
+<!-- saved from url=(0109)https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Building_Linux_Kernel -->
+<html class="natHtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" lang="zh-tw"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+<title class="foswikiContents" name="title" type="plain">Building Bootloader for Cyclone V and Arria 10 | Documentation | RocketBoards.org</title>
+<link rel="icon" href="https://www.rocketboards.org/foswiki/pub/System/RocketBoardsPlugin/favicon.ico">
+<meta name="generator" content="Foswiki v2.1.4">
+<meta name="description" content="Information abut latest bootloaders for Cortex-A9 based SoC FPGA devices">
+<meta name="keywords" content="bootloader, socfpga, cyclone v, arria 10, u-boot, spl">
+
+<meta property="og:url" content="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Building Bootloader for Cyclone V and Arria 10">
+<meta property="og:image" content="https://www.rocketboards.org/foswiki/pub/System/RocketBoards2Theme/logo.png">
+<meta property="og:description" content="Information abut latest bootloaders for Cortex-A9 based SoC FPGA devices">
+<meta property="og:site_name" content="RocketBoards.org">
+
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="https://www.rocketboards.org/foswiki/Documentation/WebAtom?contenttype=text/xml">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://www.rocketboards.org/foswiki/Documentation/WebRss?contenttype=text/xml&amp;skin=xml">
+<link rel="profile" href="http://a9.com/-/spec/opensearch/1.1/">
+<link rel="search" type="application/opensearchdescription+xml" href="https://www.rocketboards.org/foswiki/rest/RenderPlugin/template?topic=System.WebSearch&amp;name=opensearch&amp;expand=opensearch::content&amp;contenttype=text/xml" title="RocketBoards.org 內容搜尋">
+<link rel="search" type="application/opensearchdescription+xml" href="https://www.rocketboards.org/foswiki/rest/RenderPlugin/template?topic=Main.WikiUsers&amp;name=opensearch&amp;expand=opensearch::person&amp;contenttype=text/xml" title="RocketBoards.org 人員搜尋">
+<link class="head CLASSIFICATIONPLUGIN::CSS" rel="stylesheet" type="text/css" href="./SOP_C5SOC_files/styles.css" media="all">
+<link class="head FILTERPLUGIN" rel="stylesheet" type="text/css" href="./SOP_C5SOC_files/filter.css" media="all">
+<link class="head GRIDLAYOUT" rel="stylesheet" type="text/css" href="./SOP_C5SOC_files/grid.css" media="all">
+<link class="head IMAGEPLUGIN" rel="stylesheet" href="./SOP_C5SOC_files/style.css" media="all">
+<link class="head JQUERYPLUGIN::ANIMATE" rel="stylesheet" href="./SOP_C5SOC_files/animate.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::BLOCKUI" rel="stylesheet" href="./SOP_C5SOC_files/jquery.blockUI.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::AUTOSUGGEST" rel="stylesheet" href="./SOP_C5SOC_files/jquery.autosuggest.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::BUTTON" rel="stylesheet" href="./SOP_C5SOC_files/jquery.button.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::COMMENT" rel="stylesheet" href="./SOP_C5SOC_files/comment.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::FONTAWESOME" rel="stylesheet" href="./SOP_C5SOC_files/fontawesome.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::FONTAWESOME" rel="stylesheet" href="./SOP_C5SOC_files/icon-animate.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::PNOTIFY" rel="stylesheet" href="./SOP_C5SOC_files/jquery.pnotify.default.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::LIKE" rel="stylesheet" href="./SOP_C5SOC_files/like.css" type="text/css" media="all">
+<style class="head JQUERYPLUGIN::LIMITLIST">.jqLimitList{display:none}.jqLimitList.inited{display:inline}</style>
+<link class="head JQUERYPLUGIN::MEDIAELEMENT" rel="stylesheet" href="./SOP_C5SOC_files/pkg.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::METACOMMENTPLUGIN" rel="stylesheet" href="./SOP_C5SOC_files/metacomment.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::TABPANE" rel="stylesheet" href="./SOP_C5SOC_files/jquery.tabpane.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::TEXTBOXLIST" rel="stylesheet" href="./SOP_C5SOC_files/jquery.textboxlist.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::NATEDIT" rel="stylesheet" href="./SOP_C5SOC_files/styles(1).css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::PHOTOSWIPE" rel="stylesheet" href="./SOP_C5SOC_files/pkg(1).css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::SUPERFISH" rel="stylesheet" href="./SOP_C5SOC_files/jquery.superfish.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::THEME" rel="stylesheet" href="./SOP_C5SOC_files/jquery-ui.css" type="text/css" media="all">
+<link class="head JQUERYPLUGIN::TWISTY" rel="stylesheet" href="./SOP_C5SOC_files/twisty.css" type="text/css" media="all">
+<link class="head MATERIAL::CSS" rel="stylesheet" href="./SOP_C5SOC_files/font-face.css" media="all">
+<link class="head METADATA::CSS" rel="stylesheet" href="./SOP_C5SOC_files/metadata.css" media="all">
+<link class="head SMILIESPLUGIN" rel="stylesheet" href="./SOP_C5SOC_files/smilies.css" type="text/css" media="all">
+<link class="head SOCIALSHARE" rel="stylesheet" href="./SOP_C5SOC_files/styles(2).css" media="all">
+<link class="head TOPICCREATOR" rel="stylesheet" href="./SOP_C5SOC_files/topiccreator.css" media="all">
+<link class="skincss NATSKIN" rel="stylesheet" href="./SOP_C5SOC_files/print.css" type="text/css" media="print">
+<link class="skincss NATSKIN" rel="stylesheet" href="./SOP_C5SOC_files/rocketboards.css" type="text/css" media="all">
+
+<script type="text/javascript" async="" src="./SOP_C5SOC_files/ga.js"></script><script class="script JQUERYPLUGIN" src="./SOP_C5SOC_files/jquery-2.2.4.js"></script>
+<script class="script JQUERYPLUGIN::OBSERVER" src="./SOP_C5SOC_files/observer.js"></script>
+<script class="script JQUERYPLUGIN::BROWSER" src="./SOP_C5SOC_files/jquery.browser.js"></script>
+<script class="script JQUERYPLUGIN::MIGRATE" src="./SOP_C5SOC_files/jquery.migrate.js"></script>
+<script class="script JQUERYPLUGIN::FOSWIKI" src="./SOP_C5SOC_files/jquery.foswiki.js"></script>
+<script class="script JQUERYPLUGIN::I18N" src="./SOP_C5SOC_files/i18n.js"></script>
+<script class="script AUTOSUGGEST::DE::I8N" type="application/l10n" data-i18n-language="de" data-i18n-namespace="AUTOSUGGEST" data-i18n-src="/foswiki/pub/System/SolrPlugin/i18n/de.js"></script>
+<script class="script AUTOSUGGEST::EN::I8N" type="application/l10n" data-i18n-language="en" data-i18n-namespace="AUTOSUGGEST" data-i18n-src="/foswiki/pub/System/SolrPlugin/i18n/en.js"></script>
+<script class="script JQUERYPLUGIN::ANIMATE" src="./SOP_C5SOC_files/animate.js"></script>
+<script class="script JQUERYPLUGIN::BLOCKUI" src="./SOP_C5SOC_files/jquery.blockUI.js"></script>
+<script class="script JQUERYPLUGIN::BLOCKUI" src="./SOP_C5SOC_files/jquery.blockUI.init.js"></script>
+<script class="script JQUERYPLUGIN::RENDER" src="./SOP_C5SOC_files/jquery.render.js"></script>
+<script class="script JQUERYPLUGIN::RENDER" src="./SOP_C5SOC_files/jquery.template-loader.js"></script>
+<script class="script JQUERYPLUGIN::EASING" src="./SOP_C5SOC_files/jquery.easing.js"></script>
+<script class="script JQUERYPLUGIN::METADATA" src="./SOP_C5SOC_files/jquery.metadata.js"></script>
+<script class="script JQUERYPLUGIN::UI" src="./SOP_C5SOC_files/jquery-ui.js"></script>
+<script class="script JQUERYPLUGIN::UI::AUTOCOMPLETE" src="./SOP_C5SOC_files/jquery.ui.autocomplete.init.js"></script>
+<script class="script JQUERYPLUGIN::AUTOSUGGEST" src="./SOP_C5SOC_files/jquery.autosuggest.js"></script>
+<script class="script JQUERYPLUGIN::FORM" src="./SOP_C5SOC_files/jquery.form.js"></script>
+<script class="script JQUERYPLUGIN::BUTTON" src="./SOP_C5SOC_files/jquery.button.init.js"></script>
+<script class="script JQUERYPLUGIN::CHILI" src="./SOP_C5SOC_files/jquery.chili.js"></script>
+<script class="script JQUERYPLUGIN::CHILI" src="./SOP_C5SOC_files/jquery.chili.init.js"></script>
+<script class="script JQUERYPLUGIN::COMMENT" src="./SOP_C5SOC_files/comment.js"></script>
+<script class="script JQUERYPLUGIN::COOKIE" src="./SOP_C5SOC_files/jquery.cookie.js"></script>
+<script class="script JQUERYPLUGIN::FARSCROLL" src="./SOP_C5SOC_files/jquery.farscroll.js"></script>
+<script class="script JQUERYPLUGIN::FOSWIKI::PREFERENCES foswikiPreferences" type="text/json">{
+   "WIKIUSERNAME" : "Main.WikiGuest",
+   "COOKIEREALM" : "",
+   "SCRIPTURL" : "https://www.rocketboards.org/foswiki",
+   "USERNAME" : "guest",
+   "URLHOST" : "https://www.rocketboards.org",
+   "SCRIPTURLPATHS" : {
+      "view" : "/foswiki"
+   },
+   "TOPIC" : "BuildingBootloaderCycloneVAndArria10",
+   "WIKINAME" : "WikiGuest",
+   "WEB" : "Documentation",
+   "SYSTEMWEB" : "System",
+   "SERVERTIME" : "27 Apr 2023 - 15:35",
+   "PUBURL" : "https://www.rocketboards.org/foswiki/pub",
+   "SCRIPTSUFFIX" : "",
+   "USERSWEB" : "Main",
+   "SCRIPTURLPATH" : "/foswiki",
+   "PUBURLPATH" : "/foswiki/pub",
+   "NAMEFILTER" : "[\\\\\\s*?~^$@%`\"'&|<:;>\\[\\]#\\x00-\\x1f]"
+}
+</script>
+<script class="script JQUERYPLUGIN::HOVERINTENT" src="./SOP_C5SOC_files/jquery.hoverIntent.js"></script>
+<script class="script JQUERYPLUGIN::IMAGETOOLTIP" src="./SOP_C5SOC_files/jquery.imagetooltip.js"></script>
+<script class="script JQUERYPLUGIN::JSONRPC" src="./SOP_C5SOC_files/jquery.jsonrpc.js"></script>
+<script class="script JQUERYPLUGIN::PNOTIFY" src="./SOP_C5SOC_files/jquery.pnotify.js"></script>
+<script class="script JQUERYPLUGIN::LIKE" src="./SOP_C5SOC_files/like.js"></script>
+<script class="script JQUERYPLUGIN::LIMITLIST" src="./SOP_C5SOC_files/limitList.js"></script>
+<script class="script JQUERYPLUGIN::LOADER" src="./SOP_C5SOC_files/jquery.loader.js"></script><style>pre.jqLoader { display:none; }</style>
+<script class="script JQUERYPLUGIN::MEDIAELEMENT" src="./SOP_C5SOC_files/pkg.js"></script>
+<script class="script JQUERYPLUGIN::SCROLLTO" src="./SOP_C5SOC_files/jquery.scrollTo.js"></script>
+<script class="script JQUERYPLUGIN::SCROLLTO" src="./SOP_C5SOC_files/jquery.scrollTo.init.js"></script>
+<script class="script JQUERYPLUGIN::METACOMMENTPLUGIN" src="./SOP_C5SOC_files/naviblocker.js"></script>
+<script class="script JQUERYPLUGIN::METACOMMENTPLUGIN" src="./SOP_C5SOC_files/metacomment.js"></script>
+<script class="script JQUERYPLUGIN::TABPANE" src="./SOP_C5SOC_files/jquery.tabpane.js"></script>
+<script class="script JQUERYPLUGIN::TEXTBOXLIST" src="./SOP_C5SOC_files/jquery.textboxlist.js"></script>
+<script class="script JQUERYPLUGIN::TEXTBOXLIST" src="./SOP_C5SOC_files/jquery.textboxlist.init.js"></script>
+<script class="script JQUERYPLUGIN::UI::BUTTON" src="./SOP_C5SOC_files/jquery.ui.button.init.js"></script>
+<script class="script JQUERYPLUGIN::UI::DIALOG" src="./SOP_C5SOC_files/jquery.ui.dialog.init.js"></script>
+<script class="script JQUERYPLUGIN::UI::TOOLTIP" src="./SOP_C5SOC_files/jquery.ui.tooltip.init.js"></script>
+<script class="script JQUERYPLUGIN::VALIDATE" src="./SOP_C5SOC_files/pkg(2).js"></script>
+<script class="script JQUERYPLUGIN::NATEDIT" src="./SOP_C5SOC_files/jquery.natedit.js"></script>
+<script class="script JQUERYPLUGIN::PHOTOSWIPE" src="./SOP_C5SOC_files/pkg(3).js"></script>
+<script class="script JQUERYPLUGIN::SUPERFISH" src="./SOP_C5SOC_files/jquery.superfish.js"></script>
+<script class="script JavascriptFiles/foswikiPref" src="./SOP_C5SOC_files/foswikiPref.js"></script>
+<script class="script JQUERYPLUGIN::TWISTY" src="./SOP_C5SOC_files/jquery.twisty.js"></script>
+<script class="script JQUERYPLUGIN::UPLOADER::META foswikiPreferences" type="text/json">{"TopicInteractionPlugin":{"attachFileSizeLimit":"2097152","officeSuite":"msoffice"}}</script>
+<script class="script JQUERYPLUGIN::WIKIWORD" src="./SOP_C5SOC_files/wikiword.js"></script>
+<script class="script JavascriptFiles/strikeone" src="./SOP_C5SOC_files/strikeone.js"></script>
+<script class="script METADATA::JS" src="./SOP_C5SOC_files/metadata.js"></script>
+<script class="script NATEDIT::DE::I8N" type="application/l10n" data-i18n-language="de" data-i18n-namespace="NATEDIT" data-i18n-src="/foswiki/pub/System/NatEditPlugin/i18n/de.js"></script>
+<script class="script NATEDIT::PREFERENCES foswikiPreferences" type="text/json">{ 
+  "NatEditPlugin": {
+    "MathEnabled": false,
+    "ImagePluginEnabled": true,
+    "TopicInteractionPluginEnabled": true,
+    "FarbtasticEnabled": false
+  }
+}</script>
+<script class="script NATSKIN::PREFERENCES foswikiPreferences" type="text/json">{
+	 "NatSkin" : {
+		"initWebMenu": true,
+		"initTopPanel": true,
+		"initOverflows": false,
+		"initSideBar": false,
+		"initAutoComplete": true,
+		"initRedDot": true,
+		"initBusyIndicator": true,
+		"initExternalLinks": true,
+		"sideBar": "off",
+		"layout": "fixed"
+	 }
+}</script>
+<script class="script SOCIALSHARE" src="./SOP_C5SOC_files/script.js"></script>
+<script class="script TOPICCREATOR" src="./SOP_C5SOC_files/foswikiTemplate.js"></script>
+<script class="script TOPICCREATOR" src="./SOP_C5SOC_files/topiccreator.js"></script>
+<script class="script google_analytics">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-41603490-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+	 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<script class="script rocketboards" src="./SOP_C5SOC_files/rocketboards.js"></script>
+<script class="skinjs NATSKIN::JS" src="./SOP_C5SOC_files/natskin.js"></script>
+
+</head>
+<body id="body" class="natBody natBodyNotAuthorized natBodyNotAuthenticated natBodyOff natBodyFixed natViewBody  natBodyWeb_Documentation natBodyTopic_BuildingBootloaderCycloneVAndArria10 foswikiJs"><div class="natBodyContents" id="PageTop">
+
+<a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#" class="natNavToggle fa fa-bars"></a>
+<div class="natTopBar clearfix"><div class="natTopBarContents clearfix">
+<div class="foswikiGrid foswikiGutter0">
+<div class="foswikiRow"><div class="foswikiCol foswikiCol4">
+  <div class="natWebTitle"><a href="https://www.rocketboards.org/foswiki/Main/WebHome" title="Powered by Foswiki, The Free and Open Source Wiki"><img class="natWebLogo natWebLogoImage" src="./SOP_C5SOC_files/logo.png" alt="Powered by Foswiki, The Free and Open Source Wiki" height="60"> RocketBoards.org</a></div>
+</div><div class="foswikiCol foswikiCol4">
+
+<div class="natSearchBox foswikiHideOnPrint solrSearchBox"> 
+  <form name="searchbox" id="searchbox" class="natSearchForm" action="https://www.rocketboards.org/foswiki/Documentation/WebSearch" data-position-my="top" data-position-at="bottom+11">
+	 <input type="text" class="foswikiInputField ui-autocomplete-input" placeholder="search" size="20" title="Enter topic name or a search string" name="search" value="" accesskey="f" autocomplete="off"> 
+	 <input type="submit" class="foswikiSubmit" value="">
+  </form>
+</div>
+
+</div><div class="foswikiCol foswikiCol4">
+<div class="natGreeter jqUITooltip foswikiContents inited" data-theme="info" data-arrow="on" data-position="bottom" name="useractions::contents" reload="web"><div class="natGuestGreeter"><a class="natUserAction natLoginAction" rel="nofollow" href="https://www.rocketboards.org/foswiki/login/Documentation/BuildingBootloaderCycloneVAndArria10?foswiki_origin=GET%2cview%2c/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10"><i class="foswikiIcon jqIcon fa fa-sign-in"></i><span class="natTopicActionShortLabel">Log in</span></a><a class="natUserAction natRegisterAction" rel="nofollow" href="https://www.rocketboards.org/foswiki/System/UserRegistration"><i class="foswikiIcon jqIcon fa fa-users"></i><span class="natTopicActionShortLabel">註冊者</span></a><a class="natTopicAction natShareAction socialShareButton" title="Share this topic with others" rel="nofollow" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#"><i class="foswikiIcon jqIcon fa fa-share-alt"></i><span class="natTopicActionShortLabel">Share</span></a></div>
+</div>
+</div></div></div>
+</div></div>
+
+<div class="natWebMenu clearfix foswikiContents" name="webmenu::contents" reload="web">
+<div class="natWebMenuContents clearfix"> 
+  <ul class="sf-menu sf-js-enabled" style="touch-action: pan-y;">  <li class="notcurrent"><a href="https://www.rocketboards.org/foswiki/Main/WebHome">Home</a></li>
+  <li class="current hasSubMenu"><a class="foswikiCurrentWebHomeLink sf-with-ul" href="https://www.rocketboards.org/foswiki/Documentation/WebHome">Documentation</a>
+      <ul style="display: none;">
+         <li><a href="https://www.rocketboards.org/foswiki/Main/GettingStarted">Getting Started</a></li>
+         <li><a href="https://www.rocketboards.org/foswiki/Documentation/Training">Training</a></li>
+         <li><a href="https://www.rocketboards.org/foswiki/Documentation/Task">Tasks &amp; Tutorials</a></li>
+
+         <li><a href="https://www.rocketboards.org/foswiki/Main/WebSearch">Find a Document</a></li>
+      </ul>
+  </li>
+  <li class="notcurrent hasSubMenu"><a class="sf-with-ul">Community</a>
+      <ul style="display: none;">
+         <li><a class="natExternalLink" href="https://forum.rocketboards.org/" target="_blank" rel="noopener noreferrer">Forum</a></li>
+
+         <li><a class="natExternalLink" href="https://github.com/altera-opensource" target="_blank" rel="noopener noreferrer">Git Repositories</a></li>
+         <li><a href="https://www.rocketboards.org/foswiki/Main/WikiUsers">Users</a></li>
+         <li><a href="https://www.rocketboards.org/foswiki/Main/WikiGroups">Groups</a></li>
+         <li><a href="https://www.rocketboards.org/foswiki/Main/Partners">Partners</a></li>
+      </ul>
+  </li>
+  <li class="notcurrent hasSubMenu"><a href="https://www.rocketboards.org/foswiki/Projects/WebHome" class="sf-with-ul">Projects</a>
+      <ul style="display: none;">
+         <li><a href="https://www.rocketboards.org/foswiki/Projects/Project">Register a Project</a></li>
+         <li><a href="https://www.rocketboards.org/foswiki/Projects/WebHome">Find a Project</a></li>
+      </ul>
+  </li>
+  <li class="notcurrent hasSubMenu"><a href="https://www.rocketboards.org/foswiki/Documentation/Board" class="sf-with-ul">Boards</a>
+    <ul class="DIS_natMegaMenu" style="display: none;"><li class="hasSubMenu"><a href="https://www.rocketboards.org/foswiki/Documentation/Board?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=field_Device_s%3AAgilex" class="sf-with-ul">Agilex SoC</a>
+               <ul style="display: none;"><li><a href="https://www.rocketboards.org/foswiki/Documentation/IntelAgilexSoCDevelopmentKit">Intel Agilex SoC Development Kit</a></li></ul>
+              </li>
+<li class="hasSubMenu"><a href="https://www.rocketboards.org/foswiki/Documentation/Board?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=field_Device_s%3A%22Arria%2010%22" class="sf-with-ul">Arria 10 SoC</a>
+               <ul style="display: none;"><li><a href="https://www.rocketboards.org/foswiki/Documentation/385AArria10FPGANetworkAcceleratorCard">Nallatech 385A - Arria 10 FPGA Network Accelerator Card</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/385ASoCSystemOnChipFPGAAcceleratorCard">Nallatech 385A-SoC Accelerator Card with Arria 10 FPGA</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/AlaricInstantDevKitARRIA10SoCFMCIDK">ALARIC Instant DevKit ARRIA 10 SoC FMC IDK by REFLEX CES</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/AlteraArria10SoCVirtualPlatform">Altera Arria 10 SoC Virtual Platform</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/Arria10SoCDevelopmentKit">Altera Arria 10 SoC Board</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/NallatechIntelArria10FPGAAcceleratorCard510T">Nallatech 510T compute acceleration card with Intel Arria 10 FPGA</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/REFLEXCESAchillesArria10SoCSOM">REFLEX CES Achilles Arria 10 SoC SOM</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/Terasic_A10SoC_Board_HAN_Pilot_Platform">Terasic Arria10 SoC Board : HAN Pilot Platform</a></li></ul>
+              </li>
+<li class="hasSubMenu"><a href="https://www.rocketboards.org/foswiki/Documentation/Board?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=field_Device_s%3A%22Arria%20V%22" class="sf-with-ul">Arria V SoC</a>
+               <ul style="display: none;"><li><a href="https://www.rocketboards.org/foswiki/Documentation/ArriaVSoCDevelopmentKit">Altera Arria V SoC Board</a></li></ul>
+              </li>
+<li class="hasSubMenu"><a href="https://www.rocketboards.org/foswiki/Documentation/Board?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=field_Device_s%3A%22Cyclone%20V%22" class="sf-with-ul">Cyclone V SoC</a>
+               <ul style="display: none;"><li><a href="https://www.rocketboards.org/foswiki/Documentation/AlteraSoCDevelopmentBoard">Altera Cyclone V SoC Board</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/ArrowSoCKitEdition201707">Arrow SoCKit User Manual - July 2017 Edition</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/ArrowSoCKitEdition201911">Arrow SoCKit User Manual - November 2019 Edition</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/ArrowSoCKitEvaluationBoard">Arrow SoCKit Evaluation Board</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/AtlasSoCDevelopmentPlatform">Atlas-SoC Development Platform</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/CriticalLinkSoCDevelopmentKit">Critical Link MitySOM-5CSx Development Kit</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/CycloneVEthernetDriverProblems">Cyclone V Ethernet driver problems</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/DE10NanoDevelopmentBoard">DE10-Nano Development Board</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/DE10Standard">Terasic DE10-Standard Development Kit</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/DevboardsDBMSoC1Module">Devboards DBM-SoC1 module</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/DevboardsDBMSoC2Module">Devboards DBM-SoC2 module</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/EBVSoCratesEvaluationBoard">EBV SoCrates Evaluation Board</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/EnclustraSA1Module">Enclustra Mercury SA1 SoC Module</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/EnterpointDrigmorn5">Enterpoint Drigmorn 5</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/EnterpointLarg2">Enterpoint Larg 2</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/IWRainboWG17DAlteraCycloneVSoCDevelopmentPlatform">Altera Cyclone V SoC Development Platform</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/MacnicaHelioSoCEvaluationKit">Mpression Helio SoC Evaluation Kit by Macnica</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/MacnicaSodiaEvaluationBoard">Mpression Sodia Evaluation Board by Macnica</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/MCVSoM">ARIES Embedded - MCV System on Module</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/MpressionBoraxSOMModuleAndDevelopmentKit">Mpression Borax SOM Module and Development Kit by Macnica</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/Mulldonoch3">Enterpoint Mulldonoch 3</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/NetworkedProAudioFPGASoCDevelopmentKitByCoveloz">Networked Pro-Audio FPGA SoC Development Kit by Coveloz</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/NOVPEKCVLite">NOVPEK™CVLite</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/NOVSOMCV">NOVSOM<sup>®</sup>CV</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/NovsomSupSupCV">NOVSOM<sup>®</sup>CVLite</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/NovT">NovTech IoT Octopus™</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/NovTechNetLeap">NovTech NetLeap™</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/Raggedstone4">Enterpoint Raggedstone 4</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/SMARCCompliantSystemOnModule">Solectrix SMARC compliant System-on-Module</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/TerasicDE1SoCDevelopmentAndEducationBoard">Terasic DE1-SoC Development and Education Board</a></li></ul>
+              </li>
+<li class="hasSubMenu"><a href="https://www.rocketboards.org/foswiki/Documentation/Board?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=field_Device_s%3A%22Stratix%2010%22" class="sf-with-ul">Stratix 10 SoC</a>
+               <ul style="display: none;"><li><a href="https://www.rocketboards.org/foswiki/Documentation/REFLEXCESCOMXpressSXStratix10Module">REFLEX CES COMXpressSX Stratix 10 Module</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/Stratix10SoCDevelopmentKit">Intel Stratix 10 SoC Board</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/TerasicStratix10SoCBoardApolloS10SoM">Terasic Stratix 10 SoC Board : Apollo S10 SoM</a></li><li><a href="https://www.rocketboards.org/foswiki/Documentation/TerasicStratix10SoCBoardDE10Pro">Terasic Stratix 10 SoC Board : DE10-Pro</a></li></ul>
+              </li><li><a href="https://www.rocketboards.org/foswiki/Documentation/Board">Find a Board</a></li>
+              </ul>
+  </li>
+  <li class="notcurrent"><a href="https://www.rocketboards.org/foswiki/News/WebHome">News</a>
+  </li>
+</ul> 
+</div>
+<select><option value="">Go to...</option><option value="/foswiki/Main/WebHome">Home</option><option value="/foswiki/Documentation/WebHome">Documentation</option><option>Community</option><option value="/foswiki/Projects/WebHome">Projects</option><option value="/foswiki/Documentation/Board">Boards</option><option value="/foswiki/News/WebHome">News</option></select></div>
+<div class="natMiddle foswikiContents" name="main::contents" page-in-effect="" page-out-effect="">
+<div class="natMiddleContents clearfix">
+
+<div itemscope="" itemtype="http://schema.org/Article" class="natMain clearfix">
+<div class="natMainHeaderContents clearfix">
+<div class="natTopicActions jqUITooltip clearfix inited" id="natTopicActions" data-theme="info" data-arrow="on" data-position="top"><a class="natTopicAction natShareAction socialShareButton" title="Share this topic with others" rel="nofollow" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#"><i class="foswikiIcon jqIcon fa fa-share-alt"></i><span class="natTopicActionShortLabel">Share</span></a></div>
+<div class="natBreadCrumbs"> <span class="natBreadCrumbsYouAreHere">You are here:</span> <a class="foswikiCurrentWebHomeLink" href="https://www.rocketboards.org/foswiki/Documentation/WebHome">文件</a><span class="natSep">&nbsp;» </span><a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10">Building Bootloader for Cyclone V and Arria 10</a></div>
+
+</div>
+<div class="natMainContents clearfix" id="natMainContents">
+<div class="foswikiTopicInfo">
+<h1 itemprop="headline"><a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10"><span itemprop="name">Building Bootloader for Cyclone V and Arria 10</span></a> <div class="foswikiTopicSummary">Information abut latest bootloaders for Cortex-A9 based SoC FPGA devices</div></h1>
+<span class="foswikiRevision"><span class="foswikiRevisionDate"><i class="foswikiIcon jqIcon fa fa-calendar"></i>
+      <a href="https://www.rocketboards.org/foswiki/diff/Documentation/BuildingBootloaderCycloneVAndArria10?rev=39">
+            <span itemprop="dateModified" content="2023-04-19T08:31:26Z">19 April 2023 - 08:31</span>
+         </a>
+  </span>
+  <span class="foswikiRevisionSep">|</span>
+  <span class="foswikiRevisionID">
+   <i class="foswikiIcon jqIcon fa fa-flag"></i>
+   Version <span itemprop="version">39</span>
+  </span>
+  <span class="foswikiRevisionSep">|</span>
+  <span class="foswikiRevisionAuthor" itemprop="author">
+   <i class="foswikiIcon jqIcon fa fa-user"></i>
+   <a href="https://www.rocketboards.org/foswiki/Main/TheebanPillai" itemprop="name" class="foswikiUserField">TheebanPillai</a>
+  </span> 
+
+ <span class="foswikiRevisionSep">|</span> <i class="foswikiIcon jqIcon fa fa-tag"></i> <span class="jqLimitList inited" data-max="30"><a href="https://www.rocketboards.org/foswiki/Documentation/WebSearch?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=tag%3A%22arria%2010%22" rel="tag" itemprop="keywords" class="tag_arria_10">arria 10</a>, <a href="https://www.rocketboards.org/foswiki/Documentation/WebSearch?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=tag%3Abootloader" rel="tag" itemprop="keywords" class="tag_bootloader">bootloader</a>, <a href="https://www.rocketboards.org/foswiki/Documentation/WebSearch?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=tag%3A%22cyclone%20v%22" rel="tag" itemprop="keywords" class="tag_cyclone_v">cyclone v</a>, <a href="https://www.rocketboards.org/foswiki/Documentation/WebSearch?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=tag%3Asocfpga" rel="tag" itemprop="keywords" class="tag_socfpga">socfpga</a>, <a href="https://www.rocketboards.org/foswiki/Documentation/WebSearch?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=tag%3Aspl" rel="tag" itemprop="keywords" class="tag_spl">spl</a>, <a href="https://www.rocketboards.org/foswiki/Documentation/WebSearch?origin=Documentation.BuildingBootloaderCycloneVAndArria10#fq=tag%3Au-boot" rel="tag" itemprop="keywords" class="tag_u-boot">u-boot</a></span></span></div>For Stratix 10 and Agilex devices, refer to <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloader">Building Bootloader for Stratix 10 and Agilex</a>.
+<p></p>
+<p></p>
+<div class="foswikiToc"> <ul>
+<li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Introduction">Introduction</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#U_45Boot_Branches">U-Boot Branches</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#U_45Boot_Build_Flows">U-Boot Build Flows</a> <ul>
+<li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Cyclone_V_SoC_and_Arria_V_SoC">Cyclone V SoC and Arria V SoC</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Arria_10_SoC">Arria 10 SoC</a>
+</li></ul> 
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#U_45Boot_Examples">U-Boot Examples</a> <ul>
+<li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Prerequisites">Prerequisites</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Cyclone_V_SoC_45_Boot_from_SD_Card">Cyclone V SoC - Boot from SD Card</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Cyclone_V_SoC_45_Boot_from_QSPI">Cyclone V SoC - Boot from QSPI</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Arria_10_SoC_45_Boot_from_SD_Card">Arria 10 SoC - Boot from SD Card</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Arria_10_SoC_45_Boot_from_QSPI">Arria 10 SoC - Boot from QSPI</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Arria_10_SoC_45_Boot_from_NAND">Arria 10 SoC - Boot from NAND</a>
+</li></ul> 
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Appendix_45_Building_Linux_Binaries">Appendix - Building Linux Binaries</a> <ul>
+<li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Prerequisites_AN1">Prerequisites</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Building_Linux_Kernel">Building Linux Kernel</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Building_Yocto_Rootfs">Building Yocto Rootfs</a>
+</li></ul> 
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Appendix_45_Reducing_Arria_10_Fabric_Configuration_Time">Appendix - Reducing Arria 10 Fabric Configuration Time</a> <ul>
+<li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Option_351_45_Separate_Configuration_Files">Option #1 - Separate Configuration Files</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Option_352_45_Combined_Configuration_File">Option #2 - Combined Configuration File</a>
+</li></ul> 
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Appendix_45_Running_U_45Boot_with_the_Debugger_from_Command_Line">Appendix - Running U-Boot with the Debugger from Command Line</a> <ul>
+<li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Cyclone_V_SoC_45_Run_U_45Boot_from_Debugger">Cyclone V SoC - Run U-Boot from Debugger</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Arria_10_SoC_45_Run_U_45Boot_from_Debugger">Arria 10 SoC - Run U-Boot from Debugger</a>
+</li></ul> 
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Appendix_45_Debugging_U_45Boot_with_Arm_DS_Eclipse">Appendix - Debugging U-Boot with Arm DS Eclipse</a> <ul>
+<li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Cyclone_V_SoC_45_Debugging_U_45Boot">Cyclone V SoC - Debugging U-Boot</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Arria_10_SoC_45_Debugging_U_45Boot">Arria 10 SoC - Debugging U-Boot</a>
+</li></ul> 
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Appendix_45_Customizing_Arria_10_GHRD_Recipes_for_Custom_Board">Appendix - Customizing Arria 10 GHRD Recipes for Custom Board</a>
+</li> <li> <a href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Page_Revision_History">Page Revision History</a>
+</li></ul> 
+</div>
+<h2 id="Introduction">  Introduction </h2>
+<p></p>
+This page contains instructions on how to build U-Boot in the following configurations:
+<p></p> <table class="foswikiTable"><thead><tr><th><strong> Device </strong></th>
+<th><strong> Quartus Version </strong></th>
+<th><strong> U-Boot Branch </strong></th>
+<th><strong> Linux Branch </strong></th>
+</tr></thead><tbody><tr><td>  Cyclone V SoC  </td>
+<td>  22.1 Std  </td>
+<td>  2022.04  </td>
+<td>  5.15.50-lts  </td>
+</tr><tr><td>  Arria 10 SoC  </td>
+<td>  23.1 Pro  </td>
+<td>  2022.10  </td>
+<td>  5.15.90-lts  </td>
+</tr></tbody></table>
+<p></p>
+<span class="foswikiRedFG">Note: SoC EDS is no longer required to generate the handoff folder for Cyclone V for releases 22.1std and after. Please refer to section below if you are using version 21.1std and older. </span>
+<p></p>
+Starting with SoC EDS Pro version 19.3 and SoC EDS Standard version 19.1, the following changes were made: <ul>
+<li> The bootloader source code was removed from SoC EDS. Instead, the user needs to clone the git trees from <a class="natExternalLink" href="https://github.com/altera-opensource/u-boot-socfpga" target="_blank" rel="noopener noreferrer">https://github.com/altera-opensource/u-boot-socfpga</a>.
+</li> <li> The same U-Boot branch is used for all SoC FPGA devices: Cyclone V SoC, Arria V SoC, Arria 10 SoC, Stratix 10 SoC, Agilex.
+</li> <li> The bootloader generator (bsp-editor) still needs to be used for Cyclone V SoC, Arria V SoC and Arria 10 SoC, but: <ul>
+<li> Does not support custom user settings anymore. Instead all custom user settings must be done directly in U-Boot (device tree, configuration and source code).
+</li> <li> Does not create a makefile which builds the bootloader. Instead the user is notified about this page, which contains instructions on how to build the bootloader.
+</li></ul> 
+</li></ul> 
+<p></p>
+Note that Arria V SoC flow is identical with the Cyclone V SoC one, so it is not presented separately.
+<p></p>
+Starting with Quartus Pro 20.3, the SoC EDS was discontinued, and the functionality of the tools which were previously part of SoC EDS are provided separately. For Arria 10, the bsp-editor functionality was incorporated in an U-Boot script, and the tool is not needed anymore.
+<p></p>
+<h2 id="U_45Boot_Branches">  U-Boot Branches </h2>
+<p></p>
+The official Intel SOCFPGA U-Boot repository is located at <a class="natExternalLink" href="https://github.com/altera-opensource/u-boot-socfpga" target="_blank" rel="noopener noreferrer">https://github.com/altera-opensource/u-boot-socfpga</a>.
+<p></p>
+Notes: <ul>
+<li> A "RC" labeled branch is for internal active development use and customer early access without official customer support. 
+</li> <li> Latest stable branch (no RC labeled) is strongly recommended for development and production use outside of Intel. 
+</li> <li> See <a class="natExternalLink" href="https://github.com/altera-opensource/u-boot-socfpga/blob/HEAD/doc/README.socfpga" target="_blank" rel="noopener noreferrer">doc/README.socfpga</a> for Quartus and Device support.
+</li></ul> 
+<p></p>
+<h2 id="U_45Boot_Build_Flows">  U-Boot Build Flows </h2>
+<p></p>
+<h3 id="Cyclone_V_SoC_and_Arria_V_SoC">  Cyclone V SoC and Arria V SoC </h3>
+<p></p>
+For Cyclone V SoC and Arria V SoC, the handoff information created by Quartus compilation comes in several formats: C source code, XML and binary files. Bsp-editor takes this information and turns it into source code which is used to build U-Boot. For older versions of SoC EDS, the user could set various U-Boot parameters in bsp-editor. For the current version of SoC EDS, they have no effect.
+<p></p>
+Old Flow
+<hr>
+The U-Boot could be built in previous versions of SoC EDS using the following flow:
+<p></p>
+<img src="./SOP_C5SOC_files/cv-old-flow.png" class="imagePlain imagePlain_none " alt="cv-old-flow.png" title="cv-old-flow.png" width="850" height="306"><p></p>
+Key aspects to note: <ul>
+<li> Most user options (like boot source, enabling ECC scrubbing, watchdog etc) were set through the bsp-editor GUI or the command line equivalents.
+</li> <li> U-Boot source code was part of SoC EDS
+</li> <li> The makefile created by the bsp-editor allowed building the bootloader with a single 'make' command
+</li></ul> 
+<p></p>
+New Flow
+<hr>
+Starting with this release of SoC EDS, the build flow is different, as depicted below:
+<p></p>
+<img src="./SOP_C5SOC_files/cv-new-flow.png" class="imagePlain imagePlain_none " alt="cv-new-flow.png" title="cv-new-flow.png" width="848" height="447"><p></p>
+Key differences are: <ul>
+<li> All the user options defined in the bsp-editor are not applicable anymore. They can still be set in the interface, but they have no effect
+</li> <li> All custom user settings must be done directly in U-Boot (device tree, configuration and source code).
+</li> <li> The makefile generated by bsp-editor does not build U-Boot, instead it instructs the user to go to this page
+</li> <li> The U-boot source code needs to be retrieved by the user from github
+</li> <li> A tool called qts_filter (part of U-Boot) needs to be called to convert the handoff files and bsp-editor generated files to the format required by the new U-Boot version.
+</li></ul> 
+<p></p>
+<h3 id="Arria_10_SoC">  Arria 10 SoC </h3>
+<p></p>
+For Arria 10 SoC, the handoff information created by Quartus compilation contains just an XML file, describing mainly the HPS pin muxing and also the clock tree settings. Bsp-editor takes this information, and creates a device tree file which is then used by U-Boot. For older versions of SoC EDS, the user could set various U-Boot parameters, like FPGA configuration filenames and firewall settings in bsp-editor. For this release the user must leave the defaults in, and manually change the device tree if needed.
+<p></p>
+Old Flow (pre 19.3)
+<hr>
+<p></p>
+The U-Boot could be built in previous versions of SoC EDS using the following flow:
+<p></p>
+<img src="./SOP_C5SOC_files/a10-old-flow.png" class="imagePlain imagePlain_none " alt="a10-old-flow.png" title="a10-old-flow.png" width="853" height="306"><p></p>
+Interim FlowFlow (19.3 through 20.1)
+<hr>
+<p></p>
+In 19.3 the build flow was changed, as depicted below:
+<p></p>
+<img src="./SOP_C5SOC_files/a10-new-flow.png" class="imagePlain imagePlain_none " alt="a10-new-flow.png" title="a10-new-flow.png" width="854" height="261"><p></p>
+New Flow (20.3 and after)
+<hr>
+<p></p>
+Starting with 20.3 Pro, the SoC EDS was discontinued, and the functionality of the components of SoC EDS is provided separately. The new flow does not need the bsp-editor tool anymore, as shown below:
+<p></p>
+<img src="./SOP_C5SOC_files/a10-newest-flow.png" class="imagePlain imagePlain_none " alt="a10-newest-flow.png" title="a10-newest-flow.png" width="855" height="262"><p></p>
+<h2 id="U_45Boot_Examples">  U-Boot Examples </h2>
+<p></p>
+<h3 id="Prerequisites">  Prerequisites </h3>
+<p></p>
+The following are required: <ul>
+<li> Host machine running Linux. Ubuntu 20.04 was used, but other versions may work too. For Ubuntu version 20.04, you are required to installed it manually as it is not included in the OS package.
+</li> <li> Internet connection to download the tools and clone the U-Boot git tree from github. If you are behind a firewall you will need your system administrator to enable you to get to the git trees.
+</li> <li> Intel SoC FPGA Development Kit with your desired device: Cyclone V SoC, Arria 10 SoC, Stratix 10 SoC or Agilex
+</li> <li> For Cyclone V SoC devices <ul>
+<li> Quartus 22.1 Standard 
+</li></ul> 
+</li> <li> For Arria 10 SoC devices <ul>
+<li> Quartus Prime Pro version 22.4
+</li></ul> 
+</li></ul> 
+<p></p>
+
+Download and setup the toolchain required for Cyclone V SoC and Arria 10 SoC:
+
+<pre>wget https://developer.arm.com/-/media/Files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
+tar xf gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
+rm gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
+export PATH=`pwd`/gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf/bin:$PATH</pre>
+
+<p></p>
+Note that the examples presented on this page boot to Linux and they require Linux kernel, device tree and rootfilesystem to boot. However, you can omit the Linux binaries and just boot to U-Boot prompt if you want to.
+<p></p>
+For booting to Linux you can use your own Linux binaries, but a simple way to build them is included in <strong>Appendix - Building Linux Binaries</strong>. In either case the instructions assume the binaries are located in the <em>$LINUX_BIN</em> folder.
+<p></p>
+
+<h3 id="Cyclone_V_SoC_45_Boot_from_SD_Card">  Cyclone V SoC - Boot from SD Card </h3>
+<p></p>
+See <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Appendix_45_Building_Linux_Binaries">Appendix - Building Linux Binaries</a> for instructions on how to build the required Linux binaries for this example.
+<p></p>
+<strong>A. Setup</strong>
+
+<hr>
+Create top folder:
+
+<pre>mkdir cv_example.sdmmc
+cd cv_example.sdmmc
+export TOP_FOLDER=`pwd`</pre>
+
+<p></p>
+Get the hardware design from github and compile it:
+
+<pre>cd $TOP_FOLDER
+rm -rf  ghrd-socfpga-QPDS22.1STD_REL_GSRD_PR QPDS22.1STD_REL_GSRD_PR.zip cv_soc_devkit_ghrd
+wget https://github.com/altera-opensource/ghrd-socfpga/archive/refs/tags/QPDS22.1STD_REL_GSRD_PR.zip
+unzip QPDS22.1STD_REL_GSRD_PR.zip
+mv ghrd-socfpga-QPDS22.1STD_REL_GSRD_PR/cv_soc_devkit_ghrd .
+rm -rf  ghrd-socfpga-QPDS22.1STD_REL_GSRD_PR QPDS22.1STD_REL_GSRD_PR.zip
+cd cv_soc_devkit_ghrd
+rm -rf software
+<span class="foswikiBlueFG">~/intelFPGA/22.1std/nios2eds/nios2_command_shell.sh</span> \
+make generate_from_tcl
+<span class="foswikiBlueFG">~/intelFPGA/22.1std/nios2eds/nios2_command_shell.sh</span> \
+make sof</pre>
+
+<p></p>
+
+<strong>B. Build U-Boot</strong>
+
+<hr>
+<p></p>
+Retrieve the U-Boot source code by cloning the git tree, and checking out the supported branch:
+
+<pre>cd $TOP_FOLDER/cv_soc_devkit
+mkdir software/bootloader &amp;&amp; cd software/bootloader
+git clone https://github.com/altera-opensource/u-boot-socfpga
+cd u-boot-socfpga
+<span class="foswikiBrownFG"># comment out next line to use the latest U-Boot branch</span>
+<span class="foswikiBrownFG"># git checkout -b test-bootloader -t origin/socfpga_v2022.04</span></pre>
+
+<p></p>
+Run the cv_bsp_generator.py script to take the sources from the handoff folder, format them appropriately and copy them to the U-Boot source code:
+
+<pre>cd $TOP_FOLDER/cv_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/arch/arm/mach-socfpga/cv_bsp_generator
+python cv_bsp_generator.py -i $TOP_FOLDER/cv_soc_devkit_ghrd/hps_isw_handoff/soc_system_hps_0 \
+-o ../../../../board/altera/cyclone5-socdk/qts</pre>
+
+After running the cv_bsp_generator.py script, these files should be available in <em>../board/altera/cyclone5-socdk/qts</em> path: <ul>
+<li> iocsr_config.h
+</li> <li> pll_config.h
+</li> <li> pinmux_config.h
+</li> <li> sdram_config.h
+</li></ul> 
+<p></p>
+Refer to U-Boot documentation for more details: <a class="natExternalLink" href="https://github.com/altera-opensource/u-boot-socfpga/blob/socfpga_v2022.07/doc/README.socfpga" target="_blank" rel="noopener noreferrer">https://github.com/altera-opensource/u-boot-socfpga/blob/socfpga_v2022.07/doc/README.socfpga</a>
+<p></p>
+Configure and build U-Boot:
+
+<pre>cd $TOP_FOLDER/cv_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+export CROSS_COMPILE=arm-none-linux-gnueabihf-
+make socfpga_cyclone5_defconfig
+make -j 48</pre>
+
+<p></p>
+The following files will be built in the <em>$TOP_FOLDER/cv_soc_devkit_ghrd/software/bootloader/u-boot-socfpga</em> folder:
+<p></p> <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td> spl/u-boot-spl </td>
+<td> SPL ELF executable </td>
+</tr><tr><td> u-boot </td>
+<td> U-Boot ELF executable </td>
+</tr><tr><td> u-boot-with-spl.sfp </td>
+<td>  Bootable file: four copies of SPL and one copy on U-Boot image </td>
+</tr></tbody></table>
+<p></p>
+
+<strong>C. Prepare SD Card Image</strong>
+
+<hr>
+This section presents how to prepare a bootable SD card, with Linux. If you do not need Linux, you can ommit the Linux parts, and you will only be able to boot to the U-Boot command prompt.
+<p></p>
+The following Linux binaries are assumed to be pre-built in the <em>$LINUX_BIN/a9</em> folder:
+<p></p> <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td>  zImage  </td>
+<td>  Compressed kernel image  </td>
+</tr><tr><td>  socfpga_cyclone5_socdk.dtb  </td>
+<td>  Linux device tree blob  </td>
+</tr><tr><td>  core-image-minimal-cyclone5.tar.gz  </td>
+<td>  Linux rootfilesystem  </td>
+</tr></tbody></table>
+<p></p>
+Create sd card top folder, and get the sd card script:
+
+<pre>cd $TOP_FOLDER/
+sudo rm -rf sd_card &amp;&amp; mkdir sd_card &amp;&amp; cd sd_card
+wget https://releases.rocketboards.org/2021.04/gsrd/tools/make_sdimage_p3.py
+chmod +x make_sdimage_p3.py</pre>
+
+<p></p>
+Prepare FAT partition:
+
+<pre>cd $TOP_FOLDER/sd_card
+mkdir sdfs &amp;&amp;  cd sdfs
+cp $LINUX_BIN/a9/zImage .
+cp $LINUX_BIN/a9/socfpga_cyclone5_socdk.dtb .
+mkdir extlinux
+echo "LABEL Linux Default" &gt; extlinux/extlinux.conf
+echo "    KERNEL ../zImage" &gt;&gt; extlinux/extlinux.conf
+echo "    FDT ../socfpga_cyclone5_socdk.dtb" &gt;&gt; extlinux/extlinux.conf
+echo "    APPEND root=/dev/mmcblk0p2 rw rootwait earlyprintk console=ttyS0,115200n8" &gt;&gt; extlinux/extlinux.conf</pre>
+
+<p></p>
+Prepare Rootfs partition:
+
+<pre>cd $TOP_FOLDER/sd_card
+sudo rm -rf rootfs
+mkdir rootfs &amp;&amp; cd rootfs
+sudo tar xf $LINUX_BIN/a9/core-image-minimal-cyclone5.tar.gz
+sudo rm -rf lib/modules/*
+sudo cp -r $LINUX_BIN/a9/modules/* lib/modules</pre>
+
+<p></p>
+Copy over the U-boot bootable binary file:
+
+<pre>cd $TOP_FOLDER/sd_card
+cp ../cv_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/u-boot-with-spl.sfp .</pre>
+
+<p></p>
+Prepare SD card image:
+
+<pre>cd $TOP_FOLDER/sd_card
+sudo python3 ./make_sdimage_p3.py -f \
+-P u-boot-with-spl.sfp,num=3,format=raw,size=10M,type=A2  \
+-P sdfs/*,num=1,format=fat32,size=100M \
+-P rootfs/*,num=2,format=ext3,size=300M \
+-s 512M \
+-n sdcard_cv.img</pre>
+
+<strong>D. Boot from SD Card</strong>
+<hr>
+Write SD card image to SD card.
+<p></p>
+Set BSEL jumpers to boot from 3.3V SD device: <ul>
+<li> BSEL2=1 (left)
+</li> <li> BSEL1=0 (right)
+</li> <li> BSEL0=1 (left)
+</li></ul> 
+<p></p>
+Power cycle the board - it will boot to Linux; Use username 'root' with no password to log in:
+<pre>U-Boot SPL 2022.04-21237-gfda0d9176f-dirty (Dec 05 2022 - 22:57:54 -0600)
+DDRCAL: Scrubbing ECC RAM (1024 MiB).
+DDRCAL: SDRAM-ECC initialized success with 580 ms
+Trying to boot from MMC1
+
+U-Boot 2022.04-21237-gfda0d9176f-dirty (Dec 05 2022 - 22:57:54 -0600)
+
+CPU:   Altera SoCFPGA Platform
+FPGA:  Altera Cyclone V, SE/A6 or SX/C6 or ST/D6, version 0x0
+BOOT:  SD/MMC Internal Transceiver (3.0V)
+       Watchdog enabled
+DRAM:  1 GiB
+Core:  25 devices, 15 uclasses, devicetree: separate
+MMC:   dwmmc0@ff704000: 0
+Loading Environment from MMC… *** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Model: Altera SOCFPGA Cyclone V SoC Development Kit
+Net:
+Warning: ethernet@ff702000 (eth0) using random MAC address - 5e:9b:71:a1:db:35
+eth0: ethernet@ff702000
+Hit any key to stop autoboot:  0
+Failed to load 'u-boot.scr'
+switch to partitions #0, OK
+mmc0 is current device
+Scanning mmc 0:1…
+Found /extlinux/extlinux.conf
+Retrieving file: /extlinux/extlinux.conf
+1:      Linux Default
+Retrieving file: /extlinux/../zImage
+append: root=/dev/mmcblk0p2 rw rootwait earlyprintk console=ttyS0,115200n8
+Retrieving file: /extlinux/../socfpga_cyclone5_socdk.dtb
+Kernel image @ 0x1000000 [ 0x000000 - 0x52fab0 ]
+## Flattened Device Tree blob at 02000000
+   Booting using the fdt blob at 0x2000000
+   Loading Device Tree to 09ff6000, end 09fffa09 … OK
+
+Starting kernel …
+
+Deasserting all peripheral resets
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 5.10.70-75443-gdcd92725a9dd (theeban@test1-linux-lab) (arm-none-linux-gnueabihf-gcc (GNU Toolchain for the A-profile Architecture 10.2-2020.11 (arm-10.16)) 10.2.1 20201103, GNU ld (GNU Toolchain for the A-profile Architecture 10.2-2020.11 (arm-10.16)) 2.35.1.20201028) #1 SMP Mon Dec 27 21:58:00 CST 2021
+[    0.000000] CPU: ARMv7 Processor [413fc090] revision 0 (ARMv7), cr=10c5387d
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] OF: fdt: Machine model: Altera SOCFPGA Cyclone V SoC Development Kit
+
+…
+
+[    6.211413] socfpga-dwmac ff702000.ethernet eth0: No Safety Features support found
+[    6.219217] socfpga-dwmac ff702000.ethernet eth0: registered PTP clock
+[    6.226573] socfpga-dwmac ff702000.ethernet eth0: configuring for phy/rgmii link mode
+udhcpc: started, v1.34.1
+udhcpc: broadcasting discover
+udhcpc: broadcasting discover
+udhcpc: broadcasting discover
+udhcpc: no lease, forking to background
+done.
+Starting syslogd/klogd: done
+
+Poky (Yocto Project Reference Distro) 3.4.1 cyclone5 /dev/ttyS0
+
+cyclone5 login: root
+root@cyclone5:~#</pre>
+<p></p>
+
+<h3 id="Cyclone_V_SoC_45_Boot_from_QSPI">  Cyclone V SoC - Boot from QSPI </h3>
+
+<p></p>
+Booting from QSPI is very similar with booting from SD card, with the following differences: <ul>
+<li> Additional U-Boot configuration is performed, to store envioronment in QSPI instead of SD card
+</li> <li> Binaries are written to QSPI instead of SD card
+</li></ul> 
+<p></p>
+See <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Appendix_45_Building_Linux_Binaries">Appendix - Building Linux Binaries</a> for instructions on how to build the required Linux binaries for this example.
+<p></p>
+<strong>A. Setup</strong>
+
+<hr>
+Create top folder:
+
+<pre>mkdir cv_example.qspi
+cd cv_example.qspi
+export TOP_FOLDER=`pwd`</pre>
+
+<p></p>
+Get the hardware design from github and compile it:
+
+<pre>cd $TOP_FOLDER
+rm -rf  ghrd-socfpga-QPDS22.1STD_REL_GSRD_PR QPDS22.1STD_REL_GSRD_PR.zip cv_soc_devkit_ghrd
+wget https://github.com/altera-opensource/ghrd-socfpga/archive/refs/tags/QPDS22.1STD_REL_GSRD_PR.zip
+unzip QPDS22.1STD_REL_GSRD_PR.zip
+mv ghrd-socfpga-QPDS22.1STD_REL_GSRD_PR/cv_soc_devkit_ghrd .
+rm -rf  ghrd-socfpga-QPDS22.1STD_REL_GSRD_PR QPDS22.1STD_REL_GSRD_PR.zip
+cd cv_soc_devkit_ghrd
+rm -rf software
+<span class="foswikiBlueFG">~/intelFPGA/22.1std/nios2eds/nios2_command_shell.sh</span> \
+make generate_from_tcl
+<span class="foswikiBlueFG">~/intelFPGA/22.1std/nios2eds/nios2_command_shell.sh</span> \
+make sof</pre>
+
+<p></p>
+
+<strong>B. U-Boot</strong>
+
+<hr>
+<p></p>
+Retrieve the U-Boot source code by cloning the git tree, and checking out the supported branch:
+
+<pre>cd $TOP_FOLDER/cv_soc_devkit_ghrd/software/bootloader
+git clone https://github.com/altera-opensource/u-boot-socfpga
+cd u-boot-socfpga
+<span class="foswikiBrownFG"># comment out next line to use the latest U-Boot branch</span>
+<span class="foswikiBrownFG"># git checkout -b test-bootloader -t origin/socfpga_v2022.04</span></pre>
+
+<p></p>
+Run the qts_filter to take the sources from the handoff folder and the ones generated by bsp-create-settings, format them appropriately and copy them to the U-Boot source code:
+
+<pre>cd $TOP_FOLDER/cv_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/arch/arm/mach-socfpga/cv_bsp_generator
+python cv_bsp_generator.py -i $TOP_FOLDER/cv_soc_devkit_ghrd/hps_isw_handoff/soc_system_hps_0 \
+-o ../../../../board/altera/cyclone5-socdk/qts</pre>
+
+After running the cv_bsp_generator.py script, these files should be available in <em>../board/altera/cyclone5-socdk/qts</em> path: <ul>
+<li> iocsr_config.h
+</li> <li> pll_config.h
+</li> <li> pinmux_config.h
+</li> <li> sdram_config.h
+</li></ul> 
+Refer to U-Boot documentation for more details: <a class="natExternalLink" href="https://github.com/altera-opensource/u-boot-socfpga/blob/socfpga_v2022.07/doc/README.socfpga" target="_blank" rel="noopener noreferrer">https://github.com/altera-opensource/u-boot-socfpga/blob/socfpga_v2022.07/doc/README.socfpga</a>
+<p></p>
+Configure and build U-Boot:
+
+<pre>cd $TOP_FOLDER/cv_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+export CROSS_COMPILE=arm-none-linux-gnueabihf-
+make socfpga_cyclone5_qspi_defconfig
+make -j 48</pre>
+
+<p></p>
+The following files will be built in the <em>$TOP_FOLDER/cv_soc_devkit_ghrd/software/bootloader/u-boot-socfpga</em> folder: <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td> spl/u-boot-spl </td>
+<td> SPL ELF executable </td>
+</tr><tr><td> u-boot </td>
+<td> U-Boot ELF executable </td>
+</tr><tr><td> u-boot-with-spl.sfp </td>
+<td>  Bootable file: four copies of SPL and one copy on U-Boot image </td>
+</tr></tbody></table>
+<p></p>
+
+<strong>C. QSPI Binaries</strong>
+
+<hr>
+This section presents how to boot in Linux, from QSPI. If you do not need Linux, you can ommit the Linux parts, and you will only be able to boot to the U-Boot command prompt.
+<p></p>
+The following Linux binaries are assumed to be pre-built in the <em>$LINUX_BIN/a9</em> folder: <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td>  zImage  </td>
+<td>  Compressed kernel image  </td>
+</tr><tr><td>  socfpga_cyclone5_socdk.dtb  </td>
+<td>  Linux device tree blob  </td>
+</tr><tr><td>  core-image-minimal-cyclone5.tar.gz  </td>
+<td>  Linux rootfilesystem  </td>
+</tr></tbody></table>
+<p></p>
+Create qspi_bin folder and bring all the files:
+
+<pre>cd $TOP_FOLDER/
+sudo rm -rf qspi_bin &amp;&amp; mkdir qspi_bin &amp;&amp; cd qspi_bin
+cp ../cv_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/u-boot-with-spl.sfp .
+cp $LINUX_BIN/a9/zImage .
+cp $LINUX_BIN/a9/socfpga_cyclone5_socdk.dtb .</pre>
+
+<p></p>
+Build the rootfs JFFS2 image:
+
+<pre>cd $TOP_FOLDER/qspi_bin
+sudo rm -rf core-image-minimal-cyclone5-rootfs
+mkdir core-image-minimal-cyclone5-rootfs
+cd core-image-minimal-cyclone5-rootfs
+sudo tar xf $LINUX_BIN/a9/core-image-minimal-cyclone5.tar.gz
+sudo rm -rf lib/modules/*
+cd ..
+sudo mkfs.jffs2 -r core-image-minimal-cyclone5-rootfs -s 256 -e 64KiB --squash -o core-image-minimal-cyclone5-rootfs.jffs2
+sudo chown $USER:$USER core-image-minimal-cyclone5-rootfs.jffs2
+sudo rm -rf core-image-minimal-cyclone5-rootfs</pre>
+
+<p></p>
+The following files are now prepared: <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td>  u-boot-with-spl.sfp  </td>
+<td>  Four SPL images and U-Boot image </td>
+</tr><tr><td>  socfpga_cyclone5_socdk.dtb  </td>
+<td>  Linux device tree blob  </td>
+</tr><tr><td>  zImage  </td>
+<td>  Compressed linu kernel  </td>
+</tr><tr><td>  core-image-minimal-cyclone5-rootfs.jffs2  </td>
+<td>  Linux rootfs image  </td>
+</tr></tbody></table>
+<p></p>
+
+<strong>D. Boot</strong>
+<hr>
+Set BSEL jumpers to boot from 3.3V QSPI device: <ul>
+<li> BSEL2=1 (left)
+</li> <li> BSEL1=1 (left)
+</li> <li> BSEL0=1 (left)
+</li></ul> 
+<p></p> <table class="foswikiTable"><thead><tr><th><strong> Address </strong></th>
+<th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td> 0x0000000 </td>
+<td> u-boot-with-spl.sfp </td>
+<td> Four SPL binaries and U-Boot image </td>
+</tr><tr><td> 0x0200000 </td>
+<td> n/a </td>
+<td> U-Boot environment </td>
+</tr><tr><td> 0x0220000 </td>
+<td> socfpga_cyclone5_socdk.dtb </td>
+<td> Linux device tree </td>
+</tr><tr><td> 0x0230000 </td>
+<td> zImage </td>
+<td> Linux kernel </td>
+</tr><tr><td> 0x0800000 </td>
+<td> core-image-minimal-cyclone5-rootfs.jffs2 </td>
+<td> Linux rootfs </td>
+</tr></tbody></table>
+<p></p>
+Flash the QSPI binaries:
+<pre>cd $TOP_FOLDER/qspi_bin
+
+<span class="foswikiBlueFG">~/intelFPGA/22.1std/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o pv -a 0x000000 u-boot-with-spl.sfp
+
+<span class="foswikiBlueFG">~/intelFPGA/22.1std/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o pv -a 0x220000 socfpga_cyclone5_socdk.dtb
+
+<span class="foswikiBlueFG">~/intelFPGA/22.1std/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o pv -a 0x230000 zImage
+
+<span class="foswikiBlueFG">~/intelFPGA/22.1std/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o pv -a 0x800000 -s 0x3800000 core-image-minimal-cyclone5-rootfs.jffs2</pre>
+<p></p>
+Note that quartus_hps is slow, and a better alternative is to load U-Boot through DS-5 debugger, download the files through TFTP and write them with U-Boot: <ul>
+<li> Erase the QSPI with quartus_hps:
+</li></ul> 
+<pre><span class="foswikiBlueFG">~/intelFPGA/22.1std/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o E</pre> <ul>
+<li> Copy the binaries to the TFTP folder on your host machine
+</li> <li> Run U-Boot from the debugger as shown in <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Cyclone_V_SoC_45_Run_U_45Boot_from_Debugger">Cyclone V SoC - Run U-Boot from Debugger</a>
+</li> <li> Connnect your U-Boot to the network, and specify the IP address of you host machine:
+</li></ul> 
+<pre>setenv autoload no
+dhcp
+setenv serverip <span class="foswikiRedFG">&lt;your_server_ip&gt;</span></pre> <ul>
+<li> In U-Boot, download binaries over TFTP, and write the to QSPI:
+</li></ul> 
+<pre>sf probe
+tftp ${loadaddr} u-boot-with-spl.sfp;sf write ${loadaddr} 0x000000 ${filesize}
+tftp ${loadaddr} socfpga_cyclone5_socdk.dtb;sf write ${loadaddr} 0x220000 ${filesize}
+tftp ${loadaddr} zImage;sf write ${loadaddr} 0x230000 ${filesize}
+tftp ${loadaddr} core-image-minimal-cyclone5-rootfs.jffs2;sf write ${loadaddr} 0x800000 ${filesize}</pre>
+<p></p>
+Power cycle the board, and boot to Linux:
+<pre>U-Boot SPL 2021.07-16360-gee63370553-dirty (Dec 20 2021 - 12:31:46 -0600)
+DDRCAL: Scrubbing ECC RAM (1024 MiB).
+DDRCAL: SDRAM-ECC initialized success with 579 ms
+Trying to boot from SPI
+
+U-Boot 2021.07-16360-gee63370553-dirty (Dec 20 2021 - 12:31:46 -0600)
+
+CPU:   Altera SoCFPGA Platform
+FPGA:  Altera Cyclone V, SE/A6 or SX/C6 or ST/D6, version 0x0
+BOOT:  QSPI Flash (3.0V)
+       Watchdog enabled
+DRAM:  1 GiB
+MMC:   dwmmc0@ff704000: 0
+Loading Environment from SPIFlash… SF: Detected n25q512ax3 with page size 256 Bytes, erase size 64 KiB, total 64 MiB
+*** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Model: Altera SOCFPGA Cyclone V SoC Development Kit
+Net:   
+Warning: ethernet@ff702000 (eth0) using random MAC address - 2e:d9:0c:64:69:0b
+eth0: ethernet@ff702000
+Hit any key to stop autoboot:  0 
+SF: Detected n25q512ax3 with page size 256 Bytes, erase size 64 KiB, total 64 MiB
+device 0 offset 0x230000, size 0x5d0000
+SF: 6094848 bytes @ 0x230000 Read: OK
+device 0 offset 0x220000, size 0x10000
+SF: 65536 bytes @ 0x220000 Read: OK
+Kernel image @ 0x1000000 [ 0x000000 - 0x52fbb0 ]
+## Flattened Device Tree blob at 02000000
+   Booting using the fdt blob at 0x2000000
+   Loading Device Tree to 09ff6000, end 09fffa09 … OK
+
+Starting kernel …
+
+Deasserting all peripheral resets
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 5.10.70-75443-gdcd92725a9dd-dirty (radu@linux-machine) (arm-none-linux-gnueabihf-gcc (GNU Toolchain for the A-profile Architecture 10.2-2020.11 (arm-10.16)) 10.2.1 20201103, GNU ld (GNU Toolchain for the A-profile Architecture 10.2-2020.11 (arm-10.16)) 2.35.1.20201028) #1 SMP Mon Dec 20 11:18:16 CST 2021
+[    0.000000] CPU: ARMv7 Processor [413fc090] revision 0 (ARMv7), cr=10c5387d
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] OF: fdt: Machine model: Altera SOCFPGA Cyclone V SoC Development Kit
+
+…
+
+[    5.231684] socfpga-dwmac ff702000.ethernet eth0: configuring for phy/rgmii link mode
+[    8.341623] socfpga-dwmac ff702000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
+[    8.350073] IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready
+
+Poky (Yocto Project Reference Distro) 3.4.1 cyclone5 /dev/ttyS0
+
+cyclone5 login: root
+root@cyclone5:~#</pre>
+
+<h3 id="Arria_10_SoC_45_Boot_from_SD_Card">  Arria 10 SoC - Boot from SD Card </h3>
+
+<p></p>
+See <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Appendix_45_Building_Linux_Binaries">Appendix - Building Linux Binaries</a> for instructions on how to build the required Linux binaries for this example.
+<p></p>
+<strong>A. Setup</strong>
+
+<hr>
+<p></p>
+Create top folder:
+
+<pre>sudo rm -rf a10_example.sdmmc
+mkdir a10_example.sdmmc
+cd a10_example.sdmmc
+export TOP_FOLDER=`pwd`</pre>
+
+<p></p>
+Bring a copy of the hardware design - already compiled, and remove the software folder:
+
+<pre>cd $TOP_FOLDER
+rm -rf  ghrd-socfpga-QPDS22.4_REL_GSRD_PR QPDS22.4_REL_GSRD_PR.zip a10_soc_devkit_ghrd
+wget https://github.com/altera-opensource/ghrd-socfpga/archive/refs/tags/QPDS22.4_REL_GSRD_PR.zip
+unzip QPDS22.4_REL_GSRD_PR.zip
+mv ghrd-socfpga-QPDS22.4_REL_GSRD_PR/a10_soc_devkit_ghrd_pro a10_soc_devkit_ghrd
+rm -rf  ghrd-socfpga-QPDS22.4_REL_GSRD_PR QPDS22.4_REL_GSRD_PR.zip
+cd a10_soc_devkit_ghrd
+make clean &amp;&amp; make scrub_clean &amp;&amp; rm -rf software
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+make generate_from_tcl
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+make rbf</pre>
+
+<p></p>
+
+<strong>B. Build U-Boot</strong>
+
+<hr>
+<p></p>
+Retrieve the U-Boot source code by cloning the git tree, and checking out the supported branch:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/
+mkdir -p software/bootloader
+cd software/bootloader/
+git clone https://github.com/altera-opensource/u-boot-socfpga
+cd u-boot-socfpga
+<span class="foswikiBrownFG"># comment out next line to use the latest U-Boot branch</span>
+<span class="foswikiBrownFG"># git checkout -b test -t origin/socfpga_v2022.07</span></pre>
+
+<p></p>
+Convert hps.xml handoff file to include file to be used by the device tree:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+./arch/arm/mach-socfpga/qts-filter-a10.sh \
+../../../hps_isw_handoff/hps.xml \
+arch/arm/dts/socfpga_arria10_socdk_sdmmc_handoff.h</pre>
+
+<p></p>
+Configure and build U-Boot:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+export CROSS_COMPILE=arm-none-linux-gnueabihf-
+make socfpga_arria10_defconfig
+make -j 48</pre>
+
+<p></p>
+This will create the following files: <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td> spl/u-boot-splx4.sfp </td>
+<td>  Bootable image, with four SPL binaries, in the format required by BootROM  </td>
+</tr><tr><td> u-boot.img </td>
+<td>  U-Boot image  </td>
+</tr></tbody></table>
+<p></p>
+Create the FIT image with the FPGA programming files, used by SPL to configure FPGA:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+ln -s ../../../output_files/ghrd_10as066n2.core.rbf .
+ln -s ../../../output_files/ghrd_10as066n2.periph.rbf .
+tools/mkimage -E -f board/altera/arria10-socdk/fit_spl_fpga.its fit_spl_fpga.itb</pre>
+
+This creates the file <em>fit_spl_fpga.itb</em>.
+<p></p>
+
+<strong>C. Build SD Card Image</strong>
+
+<hr>
+<p></p>
+Create SD card folder and retrieve the SD card script:
+
+<pre>cd $TOP_FOLDER/
+sudo rm -rf sd_card &amp;&amp; mkdir sd_card &amp;&amp; cd sd_card
+wget https://releases.rocketboards.org/2021.04/gsrd/tools/make_sdimage_p3.py
+chmod +x make_sdimage_p3.py</pre>
+
+<p></p>
+Create the folder for the FAT partition and gather the files:
+
+<pre>cd $TOP_FOLDER/sd_card
+mkdir sdfs &amp;&amp;  cd sdfs
+cp $LINUX_BIN/a9/zImage .
+cp $LINUX_BIN/a9/socfpga_arria10_socdk_sdmmc.dtb .
+cp ../../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/fit_spl_fpga.itb .
+cp ../../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/u-boot.img .
+mkdir extlinux
+echo "LABEL Arria10 SOCDK SDMMC" &gt; extlinux/extlinux.conf
+echo "    KERNEL ../zImage" &gt;&gt; extlinux/extlinux.conf
+echo "    FDT ../socfpga_arria10_socdk_sdmmc.dtb" &gt;&gt; extlinux/extlinux.conf
+echo "    APPEND root=/dev/mmcblk0p2 rw rootwait earlyprintk console=ttyS0,115200n8" &gt;&gt; extlinux/extlinux.conf</pre>
+
+<p></p>
+Create the folder for the rootfs partition:
+
+<pre>cd $TOP_FOLDER/sd_card
+mkdir rootfs &amp;&amp; cd rootfs
+sudo tar xf $LINUX_BIN/a9/core-image-minimal-arria10.tar.gz
+sudo rm -rf lib/modules/*</pre>
+
+<p></p>
+Bring over the SPL binary:
+
+<pre>cd $TOP_FOLDER/sd_card
+cp ../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/spl/u-boot-splx4.sfp .</pre>
+
+<p></p>
+Create the SD card image:
+
+<pre>cd $TOP_FOLDER/sd_card
+sudo python3 ./make_sdimage_p3.py -f \
+-P u-boot-splx4.sfp,num=3,format=raw,size=10M,type=A2  \
+-P sdfs/*,num=1,format=fat32,size=32M \
+-P rootfs/*,num=2,format=ext3,size=32M \
+-s 80M \
+-n sdcard_a10.img</pre>
+
+This will create the file <em>$TOP_FOLDER/sd_card/sdcard_a10.img</em>.
+<p></p>
+
+<strong>D. Boot</strong>
+<hr>
+<p></p>
+Write SD card image to SD card, insert in slot and power up the board.
+<p></p>
+Board will boot through SPL and U-Boot through Linux prompt. Use 'root' as login, with no password:
+<pre>U-Boot SPL 2022.01 (Jul 14 2022 - 04:47:18 +0000)
+FPGA: Checking FPGA configuration setting …
+FPGA: Start to program peripheral/full bitstream …
+FPGA: Early Release Succeeded.
+FPGA: Checking FPGA configuration setting …
+FPGA: Start to program peripheral/full bitstream …
+FPGA: Early Release Succeeded.
+
+U-Boot SPL 2022.01 (Jul 14 2022 - 04:47:18 +0000)
+DDRCAL: Success
+DDRCAL: Scrubbing ECC RAM (1024 MiB).
+DDRCAL: SDRAM-ECC initialized success with 148 ms
+FPGA: Checking FPGA configuration setting …
+FPGA: Skipping configuration …
+WDT:   Started watchdog@ffd00300 with servicing (10s timeout)
+Trying to boot from MMC1
+
+U-Boot 2022.01 (Jul 14 2022 - 04:47:18 +0000)socfpga_arria10
+
+CPU:   Altera SoCFPGA Arria 10
+BOOT:  SD/MMC External Transceiver (1.8V)
+Model: Altera SOCFPGA Arria 10
+DRAM:  1 GiB
+WDT:   Started watchdog@ffd00300 with servicing (10s timeout)
+MMC:   dwmmc0@ff808000: 0
+Loading Environment from MMC… *** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Model: Altera SOCFPGA Arria 10
+Net:
+Warning: ethernet@ff800000 (eth0) using random MAC address - 1a:4c:fe:b0:88:ae
+eth0: ethernet@ff800000
+Hit any key to stop autoboot:  0
+Failed to load 'u-boot.scr'
+15024780 bytes read in 717 ms (20 MiB/s)
+Full Configuration Succeeded.
+FPGA: Enter user mode.
+switch to partitions #0, OK
+mmc0 is current device
+Scanning mmc 0:1…
+Found /extlinux/extlinux.conf
+Retrieving file: /extlinux/extlinux.conf
+1:      Arria10 SOCDK SDMMC
+Retrieving file: /extlinux/../zImage
+append: root=/dev/mmcblk0p2 rootwait rw earlyprintk memmap=16M$0x3F000000 console=ttyS0,115200n8
+Retrieving file: /extlinux/../socfpga_arria10_socdk_sdmmc.dtb
+Kernel image @ 0x1000000 [ 0x000000 - 0x5993a0 ]
+## Flattened Device Tree blob at 02000000
+   Booting using the fdt blob at 0x2000000
+   Loading Device Tree to 09ff5000, end 09fff26c … OK
+
+Starting kernel …
+
+Deasserting all peripheral resets
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 5.15.30-altera (oe-user@oe-host) (arm-poky-linux-gnueabi-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220516) #1 SMP Fri Jun 24 03:52:26 UTC 2022
+[    0.000000] CPU: ARMv7 Processor [414fc091] revision 1 (ARMv7), cr=10c5387d
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] OF: fdt: Machine model: Altera SOCFPGA Arria 10
+
+…
+
+[  OK  ] Started Network Configuration.
+[  OK  ] Reached target Network.
+[  OK  ] Started NFS status monitor for NFSv2/3 locking..
+[  OK  ] Started Hostname Service.
+[    9.443394] random: crng init done
+[  OK  ] Finished Load/Save Random Seed.
+[   11.044930] socfpga-dwmac ff800000.ethernet eth0: Link is Up - 1Gbps/Full - flow control rx/tx
+[   11.065488] IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready
+
+Poky (Yocto Project Reference Distro) 4.0.2 arria10 ttyS0
+
+arria10 login: root
+Last login: Fri Apr 29 03:03:53 +0000 2022 on /dev/ttyS0.
+root@arria10:~#</pre>
+
+<h3 id="Arria_10_SoC_45_Boot_from_QSPI">  Arria 10 SoC - Boot from QSPI </h3>
+
+<p></p>
+See <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Appendix_45_Building_Linux_Binaries">Appendix - Building Linux Binaries</a> for instructions on how to build the required Linux binaries for this example.
+<p></p>
+<strong>A. Setup</strong>
+
+<hr>
+Create top folder:
+
+<pre>sudo rm -rf a10_example.qspi
+mkdir a10_example.qspi
+cd a10_example.qspi
+export TOP_FOLDER=`pwd`</pre>
+
+<p></p>
+Bring a copy of the hardware design, update it for QSPI and build it:
+
+<pre>cd $TOP_FOLDER
+rm -rf  ghrd-socfpga-QPDS22.4_REL_GSRD_PR QPDS22.4_REL_GSRD_PR.zip a10_soc_devkit_ghrd
+wget https://github.com/altera-opensource/ghrd-socfpga/archive/refs/tags/QPDS22.4_REL_GSRD_PR.zip
+unzip QPDS22.4_REL_GSRD_PR.zip
+mv ghrd-socfpga-QPDS22.4_REL_GSRD_PR/a10_soc_devkit_ghrd_pro a10_soc_devkit_ghrd
+rm -rf  ghrd-socfpga-QPDS22.4_REL_GSRD_PR QPDS22.4_REL_GSRD_PR.zip
+cd a10_soc_devkit_ghrd
+make clean &amp;&amp; make scrub_clean &amp;&amp; rm -rf software
+sed -i 's/HPS_BOOT_DEVICE .= .*/HPS_BOOT_DEVICE := QSPI/g' Makefile
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+make generate_from_tcl
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+make rbf</pre>
+
+<p></p>
+
+<strong>B. Build U-Boot</strong>
+
+<hr>
+<p></p>
+Get U-Boot source code
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/
+mkdir -p software/bootloader
+cd software/bootloader
+git clone https://github.com/altera-opensource/u-boot-socfpga
+cd u-boot-socfpga
+<span class="foswikiBrownFG"># comment out next line to use the latest U-Boot branch</span>
+<span class="foswikiBrownFG"># git checkout -b test-bootloader -t origin/socfpga_v2022.07</span></pre>
+
+<p></p>
+Convert hps.xml handoff file to include file to be used by the device tree:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+./arch/arm/mach-socfpga/qts-filter-a10.sh \
+../../../hps_isw_handoff/hps.xml \
+arch/arm/dts/socfpga_arria10_socdk_qspi_handoff.h</pre>
+
+<p></p>
+Configure and build U-Boot:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+export CROSS_COMPILE=arm-none-linux-gnueabihf-
+make socfpga_arria10_qspi_defconfig
+make -j 48</pre>
+
+<p></p>
+This will create the following files: <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td> spl/u-boot-splx4.sfp </td>
+<td>  Bootable image, with four SPL binaries, in the format required by BootROM  </td>
+</tr><tr><td> u-boot.img </td>
+<td>  U-Boot image  </td>
+</tr></tbody></table>
+<p></p>
+Create the FIT image with the FPGA programming files, used by SPL to configure FPGA:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+cp ../../../output_files/ghrd_10as066n2.core.rbf .
+cp ../../../output_files/ghrd_10as066n2.periph.rbf .
+tools/mkimage -E -f board/altera/arria10-socdk/fit_spl_fpga.its fit_spl_fpga.itb</pre>
+
+This creates the file <em>fit_spl_fpga.itb</em>.
+<p></p>
+Create FIT image for the U-Boot:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+tools/mkimage -E -f board/altera/arria10-socdk/fit_uboot.its  fit_uboot.itb</pre>
+
+This creates the file <em>fit_uboot.itb</em>.
+<p></p>
+Create FIT image for the Linux kernel and device tree:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+cp $LINUX_BIN/a9/Image .
+cp $LINUX_BIN/a9/socfpga_arria10_socdk_qspi.dtb .
+tools/mkimage -f  board/altera/arria10-socdk/fit_kernel_qspi.its kernel.itb</pre>
+
+This creates the file <em>fit_kernel.itb</em>.
+<p></p>
+
+<strong>C. Build QSPI Binaries</strong>
+
+<hr>
+Create qspi_bin folder and bring all the files:
+
+<pre>cd $TOP_FOLDER/
+rm -rf qspi_bin &amp;&amp; mkdir qspi_bin &amp;&amp; cd qspi_bin
+cp ../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/spl/u-boot-splx4.sfp .
+cp ../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/fit_uboot.itb .
+cp ../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/fit_spl_fpga.itb .
+cp ../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/kernel.itb .</pre>
+
+<p></p>
+Prepare JFFS2 rootfs image for booting Linux from QSPI:
+
+<pre>cd $TOP_FOLDER/qspi_bin/
+sudo rm -rf core-image-minimal-arria10-rootfs
+mkdir core-image-minimal-arria10-rootfs
+cd core-image-minimal-arria10-rootfs
+tar xf $LINUX_BIN/a9/core-image-minimal-arria10.tar.gz
+sudo rm -rf lib/modules/*
+cd ..
+sudo mkfs.jffs2 -r core-image-minimal-arria10-rootfs -s 256 -e 64KiB --squash -o core-image-minimal-arria10-rootfs.jffs2
+sudo chown $USER:$USER core-image-minimal-arria10-rootfs.jffs2
+sudo rm -rf core-image-minimal-arria10-rootfs</pre>
+
+<p></p>
+At this point the following binaries are available in the <em>$TOP_FOLDER/qspi_bin</em>: <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td> u-boot-splx4.sfp </td>
+<td> Four SPL binaries, with BootROM header </td>
+</tr><tr><td> fit_uboot.itb </td>
+<td> U-Boot image </td>
+</tr><tr><td> fit_spl_fpga.itb </td>
+<td> FPGA configuration files </td>
+</tr><tr><td> kernel.itb </td>
+<td> Linux kerned and device tree </td>
+</tr><tr><td> core-image-minimal-arria10-rootfs.jffs2 </td>
+<td> Linux rootfs </td>
+</tr></tbody></table>
+<p></p>
+
+<strong>D. Boot</strong>
+<hr>
+QSPI Flash Layout: <table class="foswikiTable"><thead><tr><th><strong> Address </strong></th>
+<th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td> 0x0000000 </td>
+<td> u-boot-splx4.sfp </td>
+<td> Four SPL binaries, with BootROM header </td>
+</tr><tr><td> 0x0100000 </td>
+<td> fit_uboot.itb </td>
+<td> U-Boot image </td>
+</tr><tr><td> 0x0200000 </td>
+<td> n/a </td>
+<td> U-Boot environment </td>
+</tr><tr><td> 0x0300000 </td>
+<td> fit_spl_fpga.itb </td>
+<td> FPGA configuration files </td>
+</tr><tr><td> 0x1200000 </td>
+<td> kernel.itb </td>
+<td> Linux kerned and device tree </td>
+</tr><tr><td> 0x2720000 </td>
+<td> core-image-minimal-arria10-rootfs.jffs2 </td>
+<td> Linux rootfs </td>
+</tr></tbody></table>
+<p></p>
+Program QSPI flash with all the binaries:
+<pre>cd $TOP_FOLDER/qspi_bin
+
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o e
+
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o pv -a 0x0000000 u-boot-splx4.sfp
+
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o pv -a 0x0100000 fit_uboot.itb
+
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o pv -a 0x0300000 fit_spl_fpga.itb
+
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o pv -a 0x1200000 kernel.itb
+
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o pv -a 0x2720000 core-image-minimal-arria10-rootfs.jffs2</pre>
+<p></p>
+Note that quartus_hps is slow, and a better alternative is to load U-Boot through DS-5 debugger, download the files through TFTP and write them with U-Boot: <ul>
+<li> Erase the QSPI flash using quartus_hps, as that is faster than U-Boot:
+</li></ul> 
+<pre><span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+quartus_hps -c 1 -o E</pre> <ul>
+<li> Copy the binaries to the TFTP folder on your host machine
+</li> <li> Run U-Boot from the debugger as shown in <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Arria_10_SoC_45_Run_U_45Boot_from_Debugger">Arria 10 SoC - Run U-Boot from Debugger</a>
+</li> <li> Connnect your U-Boot to the network, and specify the IP address of you host machine:
+</li></ul> 
+<pre>setenv autoload no
+dhcp
+setenv serverip <span class="foswikiRedFG">&lt;your_server_ip&gt;</span></pre> <ul>
+<li> In U-Boot, download binaries over TFTP, and write the to QSPI:
+</li></ul> 
+<pre>sf probe
+<span class="foswikiRedFG">Erase QSPI if not done with quartus_hps:</span>:sf erase 0 8000000
+tftp ${loadaddr} u-boot-splx4.sfp;sf write ${loadaddr} 0x0000000  ${filesize}
+tftp ${loadaddr} fit_uboot.itb; sf write ${loadaddr} 0x0100000 ${filesize} 
+tftp ${loadaddr} fit_spl_fpga.itb; sf write ${loadaddr} 0x0300000 ${filesize} 
+tftp ${loadaddr} kernel.itb; sf write ${loadaddr} 0x1200000 ${filesize} 
+tftp ${loadaddr} core-image-minimal-arria10-rootfs.jffs2 ;sf write ${loadaddr} 0x2720000 ${filesize}</pre>
+<p></p>
+Power cycle the board - it will boot to Linux login. Use 'root' as username with no password:
+<pre>U-Boot SPL 2022.04-21237-gfda0d9176f-dirty (Nov 30 2022 - 22:13:33 -0600)
+FPGA: Checking FPGA configuration setting …
+FPGA: Start to program peripheral/full bitstream …
+FPGA: Early Release Succeeded.
+FPGA: Checking FPGA configuration setting …
+FPGA: Start to program peripheral/full bitstream …
+FPGA: Early Release Succeeded.
+
+U-Boot SPL 2022.04-21237-gfda0d9176f-dirty (Nov 30 2022 - 22:13:33 -0600)
+DDRCAL: Success
+DDRCAL: Scrubbing ECC RAM (1024 MiB).
+DDRCAL: SDRAM-ECC initialized success with 148 ms
+FPGA: Checking FPGA configuration setting …
+FPGA: Start to program core bitstream …
+Full Configuration Succeeded.
+FPGA: Enter user mode.
+WDT:   Started watchdog@ffd00300 with servicing (10s timeout)
+Trying to boot from SPI
+
+U-Boot 2022.04-21237-gfda0d9176f-dirty (Nov 30 2022 - 22:13:33 -0600)socfpga_arria10
+
+CPU:   Altera SoCFPGA Arria 10
+BOOT:  QSPI Flash (1.8V)
+Model: Altera SOCFPGA Arria 10
+DRAM:  1 GiB
+Core:  69 devices, 16 uclasses, devicetree: separate
+WDT:   Started watchdog@ffd00300 with servicing (10s timeout)
+Loading Environment from SPIFlash… SF: Detected mt25qu01g with page size 256 Bytes, erase size 4 KiB, total 128 MiB
+*** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Model: Altera SOCFPGA Arria 10
+Net:
+Warning: ethernet@ff800000 (eth0) using random MAC address - 62:b4:b4:24:69:13
+eth0: ethernet@ff800000
+Hit any key to stop autoboot:  0
+SF: Detected mt25qu01g with page size 256 Bytes, erase size 4 KiB, total 128 MiB
+device 0 offset 0x1200000, size 0x6e00000
+SF: 115343360 bytes @ 0x1200000 Read: OK
+## Loading kernel from FIT Image at 02100000 …
+   Using 'conf' configuration
+   Trying 'kernel' kernel subimage
+     Description:  Linux Kernel
+     Type:         Kernel Image
+     Compression:  uncompressed
+     Data Start:   0x021000cc
+     Data Size:    14366044 Bytes = 13.7 MiB
+     Architecture: ARM
+     OS:           Linux
+     Load Address: 0x00008000
+     Entry Point:  0x00008000
+   Verifying Hash Integrity … OK
+## Loading fdt from FIT Image at 02100000 …
+   Using 'conf' configuration
+   Trying 'fdt' fdt subimage
+     Description:  Linux DTB
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x02eb36c4
+     Data Size:    25567 Bytes = 25 KiB
+     Architecture: ARM
+   Verifying Hash Integrity … OK
+   Booting using the fdt blob at 0x2eb36c4
+   Loading Kernel Image
+   Loading Device Tree to 09ff6000, end 09fff3de … OK
+
+Starting kernel …
+
+Deasserting all peripheral resets
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 5.10.70-75443-gdcd92725a9dd (theeban@test1-linux-lab) (arm-none-linux-gnueabihf-gcc (GNU Toolchain for the A-profile Architecture 10.2-2020.11 (arm-10.16)) 10.2.1 20201103, GNU ld (GNU Toolchain for the A-profile Architecture 10.2-2020.11 (arm-10.16)) 2.35.1.20201028) #1 SMP Mon Dec 27 21:58:00 CST 2021
+[    0.000000] CPU: ARMv7 Processor [414fc091] revision 1 (ARMv7), cr=10c5387d
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] OF: fdt: Machine model: Altera SOCFPGA Arria 10
+
+…
+
+udhcpc: started, v1.34.1
+udhcpc: broadcasting discover
+udhcpc: broadcasting discover
+[    8.233258] socfpga-dwmac ff800000.ethernet eth0: Link is Up - 1Gbps/Full - flow control rx/tx
+[    8.241887] IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready
+udhcpc: broadcasting discover
+udhcpc: broadcasting select for 10.122.105.64, server 10.2.71.6
+udhcpc: lease of 10.122.105.64 obtained from 10.2.71.6, lease time 3600
+/etc/udhcpc.d/50default: Adding DNS 10.248.2.1
+/etc/udhcpc.d/50default: Adding DNS 10.2.71.6
+/etc/udhcpc.d/50default: Adding DNS 10.31.40.4
+done.
+hwclock: can't open '/dev/misc/rtc': No such file or directory
+Starting syslogd/klogd: done
+
+Poky (Yocto Project Reference Distro) 3.4.1 arria10 /dev/ttyS0
+
+arria10 login:</pre>
+<p></p>
+
+<h3 id="Arria_10_SoC_45_Boot_from_NAND">  Arria 10 SoC - Boot from NAND </h3>
+
+<p></p>
+The instructions in this section assume the standard 1Gb NAND part is used (part number: MT29F1G08ABBEAH4:E, marking: NW360). Newer dev kits may be using a 8Gb part (part number: MT29F8G08ABBCAH4-IT:C, marking: NQ299).
+<p></p>
+The following changes will be needed if the newer 8Gb part number is used: <ul>
+<li> Make sure that all items in flash are aligned to the new erase block size (256KB)
+</li> <li> Make sure the JFFS2 image uses the new parameters (256KB block erase size, 2048 page size)
+</li> <li> Increase the size of the rootfs partition, to use the rest of the flash
+</li></ul> 
+<p></p>
+See <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Appendix_45_Building_Linux_Binaries">Appendix - Building Linux Binaries</a> for instructions on how to build the required Linux binaries for this example.
+<p></p>
+<strong>A. Setup</strong>
+
+<hr>
+Create top folder:
+
+<pre>sudo rm -rf a10_example.nand
+mkdir a10_example.nand
+cd a10_example.nand
+export TOP_FOLDER=`pwd`</pre>
+
+<p></p>
+Bring a copy of the hardware design, update it for QSPI and build it:
+
+<pre>cd $TOP_FOLDER
+rm -rf  ghrd-socfpga-QPDS22.4_REL_GSRD_PR QPDS22.4_REL_GSRD_PR.zip a10_soc_devkit_ghrd
+wget https://github.com/altera-opensource/ghrd-socfpga/archive/refs/tags/QPDS22.4_REL_GSRD_PR.zip
+unzip QPDS22.4_REL_GSRD_PR.zip
+mv ghrd-socfpga-QPDS22.4_REL_GSRD_PR/a10_soc_devkit_ghrd_pro a10_soc_devkit_ghrd
+rm -rf  ghrd-socfpga-QPDS22.4_REL_GSRD_PR QPDS22.4_REL_GSRD_PR.zip
+cd a10_soc_devkit_ghrd
+make clean &amp;&amp; make scrub_clean &amp;&amp; rm -rf software
+sed -i 's/HPS_BOOT_DEVICE .= .*/HPS_BOOT_DEVICE := NAND/g' Makefile
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+make generate_from_tcl
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+make rbf</pre>
+
+<p></p>
+
+<strong>Build U-Boot</strong>
+
+<hr>
+<p></p>
+Get U-Boot source code
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/
+rm -rf software/bootloader
+mkdir -p software/bootloader
+cd software/bootloader
+git clone https://github.com/altera-opensource/u-boot-socfpga
+cd u-boot-socfpga
+<span class="foswikiBrownFG"># comment out next line to use the latest U-Boot branch</span>
+<span class="foswikiBrownFG"># git checkout -b test-bootloader -t origin/socfpga_v2022.07</span></pre>
+
+<p></p>
+Convert hps.xml handoff file to include file to be used by the device tree:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+./arch/arm/mach-socfpga/qts-filter-a10.sh \
+../../../hps_isw_handoff/hps.xml \
+arch/arm/dts/socfpga_arria10_socdk_nand_handoff.h</pre>
+
+<p></p>
+Configure and build U-Boot:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+export CROSS_COMPILE=arm-none-linux-gnueabihf-
+make socfpga_arria10_nand_defconfig
+make -j 48</pre>
+
+<p></p>
+This will create the following files: <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td> spl/u-boot-splx4.sfp </td>
+<td>  Bootable image containing four identical SPL binaries, with the header required by BootROM  </td>
+</tr><tr><td> u-boot.img </td>
+<td>  U-Boot image  </td>
+</tr></tbody></table>
+<p></p>
+Create the FIT image with the FPGA programming files, used by SPL to configure FPGA:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+ln -s ../../../output_files/ghrd_10as066n2.core.rbf .
+ln -s ../../../output_files/ghrd_10as066n2.periph.rbf .
+tools/mkimage -E -f board/altera/arria10-socdk/fit_spl_fpga.its fit_spl_fpga.itb</pre>
+
+This creates the file <em>fit_spl_fpga.itb</em>.
+<p></p>
+Create FIT image for the U-Boot:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+tools/mkimage -E -f board/altera/arria10-socdk/fit_uboot.its  fit_uboot.itb</pre>
+
+This creates the file <em>fit_uboot.itb</em>.
+<p></p>
+Create FIT image for the Linux kernel and device tree:
+
+<pre>cd $TOP_FOLDER/a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+ln -s $LINUX_BIN/a9/Image .
+ln -s $LINUX_BIN/a9/socfpga_arria10_socdk_nand.dtb .
+tools/mkimage -f  board/altera/arria10-socdk/fit_kernel_nand.its kernel.itb</pre>
+
+This creates the file <em>fit_kernel.itb</em>.
+<p></p>
+
+<strong>C. Build NAND Binaries</strong>
+
+<hr>
+Create nand_bin folder and bring all the files:
+
+<pre>cd $TOP_FOLDER/
+rm -rf nand_bin &amp;&amp; mkdir nand_bin &amp;&amp; cd nand_bin
+cp ../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/spl/u-boot-splx4.sfp .
+cp ../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/fit_uboot.itb .
+cp ../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/fit_spl_fpga.itb .
+cp ../a10_soc_devkit_ghrd/software/bootloader/u-boot-socfpga/kernel.itb .</pre>
+
+<p></p>
+Prepare JFFS2 rootfs image for booting Linux from NAND:
+
+<pre>cd $TOP_FOLDER/nand_bin
+rm -rf rootfs
+mkdir rootfs
+cd rootfs
+tar xf $LINUX_BIN/a9/core-image-minimal-arria10.tar.gz
+rm -rf lib/modules
+cd ..
+mkfs.jffs2 -r rootfs -n -p --faketime --output=rootfs.jffs2 --squash -s 2048 -e 128KiB
+rm -rf rootfs</pre>
+
+<p></p>
+At this point the following binaries are available in the <em>$TOP_FOLDER/nand_bin</em>: <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td> u-boot-splx4.sfp </td>
+<td> Four SPL binaries, with BootROM header </td>
+</tr><tr><td> fit_uboot.itb </td>
+<td> U-Boot image </td>
+</tr><tr><td> fit_spl_fpga.itb </td>
+<td> FPGA configuration files </td>
+</tr><tr><td> kernel.itb </td>
+<td> Linux kerned and device tree </td>
+</tr><tr><td> rootfs.jffs2 </td>
+<td> Linux rootfs </td>
+</tr></tbody></table>
+<p></p>
+
+<strong>D. Boot</strong>
+<hr>
+NAND Flash Layout: <table class="foswikiTable"><thead><tr><th><strong> Address </strong></th>
+<th><strong> Size </strong></th>
+<th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td> 0x0000000 </td>
+<td> 0x00100000 </td>
+<td> u-boot-splx4.sfp </td>
+<td> Four SPL binaries, with BootROM header </td>
+</tr><tr><td> 0x0100000 </td>
+<td> 0x00100000 </td>
+<td> fit_uboot.itb </td>
+<td> U-Boot image </td>
+</tr><tr><td> 0x0200000 </td>
+<td> 0x00100000 </td>
+<td> n/a </td>
+<td> U-Boot environment </td>
+</tr><tr><td> 0x0300000 </td>
+<td> 0x00F00000 </td>
+<td> fit_spl_fpga.itb </td>
+<td> FPGA configuration files </td>
+</tr><tr><td> 0x1200000 </td>
+<td> 0x00E00000 </td>
+<td> kernel.itb </td>
+<td> Linux kerned and device tree </td>
+</tr><tr><td> 0x0200000 </td>
+<td> 0x06000000 </td>
+<td> rootfs.jffs2 </td>
+<td> Linux rootfs </td>
+</tr></tbody></table>
+<p></p>
+Program NAND flash with all the binaries, by doing the following: <ul>
+<li> Copy the binaries to the TFTP folder on your host machine
+</li> <li> Run U-Boot from the debugger as shown in <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Arria_10_SoC_45_Run_U_45Boot_from_Debugger">Arria 10 SoC - Run U-Boot from Debugger</a>
+</li> <li> Connnect your U-Boot to the network, and specify the IP address of you host machine:
+</li></ul> 
+<pre>setenv autoload no
+dhcp
+setenv serverip <span class="foswikiRedFG">&lt;your_server_ip&gt;</span></pre> <ul>
+<li> In U-Boot, download binaries over TFTP, and write the to NAND:
+</li></ul> 
+<pre>nand erase clean 0x02000000 0x06000000; tftp ${loadaddr} rootfs.jffs2; nand write.trimffs ${loadaddr} 0x02000000 ${filesize}
+nand erase 0x01200000 0x00E00000; tftp ${loadaddr} kernel.itb; nand write ${loadaddr} 0x01200000 ${filesize}
+nand erase 0x00300000 0x00F00000; tftp ${loadaddr} fit_spl_fpga.itb; nand write ${loadaddr} 0x00300000 ${filesize}
+nand erase 0x00100000 0x00100000; tftp ${loadaddr} fit_uboot.itb; nand write ${loadaddr} 0x00100000 ${filesize}
+nand erase 0x00000000 0x00100000; tftp ${loadaddr} u-boot-splx4.sfp; nand write ${loadaddr} 0x00000000 ${filesize}</pre>
+<p></p>
+Power cycle the board - it will boot to Linux login. Use 'root' as username with no pasword:
+<pre>FPGA: Early Release Succeeded.
+FPGA: Checking FPGA configuration setting …
+FPGA: Start to program peripheral/full bitstream …
+FPGA: Early Release Succeeded.
+
+U-Boot SPL 2021.07-16360-gee63370553-dirty (Dec 21 2021 - 21:31:38 -0600)
+DDRCAL: Success
+DDRCAL: Scrubbing ECC RAM (1024 MiB).
+DDRCAL: SDRAM-ECC initialized success with 163 ms
+FPGA: Checking FPGA configuration setting …
+FPGA: Start to program core bitstream …
+Full Configuration Succeeded.
+FPGA: Enter user mode.
+WDT:   Started with servicing (10s timeout)
+Trying to boot from NAND
+
+U-Boot 2021.07-16360-gee63370553-dirty (Dec 21 2021 - 21:31:38 -0600)socfpga_arria10
+
+CPU:   Altera SoCFPGA Arria 10
+BOOT:  NAND Flash (1.8V)
+Model: SOCFPGA Arria10 Dev Kit
+DRAM:  1 GiB
+WDT:   Started with servicing (10s timeout)
+NAND:  128 MiB
+Loading Environment from NAND… *** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Model: SOCFPGA Arria10 Dev Kit
+Net:   
+Warning: ethernet@ff800000 (eth0) using random MAC address - 5a:c1:fc:4a:a1:51
+eth0: ethernet@ff800000
+Hit any key to stop autoboot:  0 
+
+NAND read: device 0 offset 0x1200000, size 0x6e00000
+size adjusted to 0x6d80000 (4 bad blocks)
+ 114819072 bytes read: OK
+## Loading kernel from FIT Image at 02100000 …
+   Using 'conf' configuration
+   Trying 'kernel' kernel subimage
+     Description:  Linux Kernel
+     Created:      2021-12-22   3:31:53 UTC
+     Type:         Kernel Image
+     Compression:  uncompressed
+     Data Start:   0x021000cc
+     Data Size:    14366044 Bytes = 13.7 MiB
+     Architecture: ARM
+     OS:           Linux
+     Load Address: 0x00008000
+     Entry Point:  0x00008000
+   Verifying Hash Integrity … OK
+## Loading fdt from FIT Image at 02100000 …
+   Using 'conf' configuration
+   Trying 'fdt' fdt subimage
+     Description:  Linux DTB
+     Created:      2021-12-22   3:31:53 UTC
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x02eb36c4
+     Data Size:    25186 Bytes = 24.6 KiB
+     Architecture: ARM
+   Verifying Hash Integrity … OK
+   Booting using the fdt blob at 0x2eb36c4
+   Loading Kernel Image
+   Loading Device Tree to 09ff6000, end 09fff261 … OK
+
+Starting kernel …
+
+Deasserting all peripheral resets
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 5.10.70-75443-gdcd92725a9dd-dirty (radu@linux-machine) (arm-none-linux-gnueabihf-gcc (GNU Toolchain for the A-profile Architecture 10.2-2020.11 (arm-10.16)) 10.2.1 20201103, GNU ld (GNU Toolchain for the A-profile Architecture 10.2-2020.11 (arm-10.16)) 2.35.1.20201028) #1 SMP Mon Dec 20 11:18:16 CST 2021
+[    0.000000] CPU: ARMv7 Processor [414fc091] revision 1 (ARMv7), cr=10c5387d
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] OF: fdt: Machine model: Altera SOCFPGA Arria 10
+
+…
+
+udhcpc: broadcasting discover
+[    6.953579] socfpga-dwmac ff800000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
+[    6.962025] IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready
+udhcpc: broadcasting discover
+udhcpc: broadcasting discover
+udhcpc: no lease, forking to background
+done.
+Starting syslogd/klogd: done
+
+Poky (Yocto Project Reference Distro) 3.4.1 arria10 /dev/ttyS0
+
+arria10 login: root
+root@arria10:~#</pre>
+<p></p>
+
+<p></p>
+<h2 id="Appendix_45_Building_Linux_Binaries">  Appendix - Building Linux Binaries </h2>
+
+<p></p>
+This section details how to build the Linux binaries, which are used in the boot examples above. Building Linux is beyond the scope of this page, and minimal instructions are included for reference only.
+<h3 id="Prerequisites_AN1">  Prerequisites </h3>
+<p></p>
+A number of Linux packages are required to be installed in order to build the Linux kernel and rootfs. On the Ubuntu 18.04LTS machine where the instructions from this page were tested, the following command was used to install them:
+<p></p>
+<pre>sudo apt-get install gawk wget git-core diffstat unzip texinfo \
+gcc-multilib  build-essential chrpath socat cpio python python3 \
+python3-pip python3-pexpect  xz-utils debianutils iputils-ping \
+python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev  pylint3 xterm \
+libncurses-dev gawk flex bison openssl libssl-dev</pre>
+<p></p>
+
+Prepare a folder where to put all the build binaries, used by the boot examples:
+<p></p>
+
+<pre>rm -rf linux-bin &amp;&amp; mkdir linux-bin
+export set LINUX_BIN=`pwd`/linux-bin
+mkdir -p $LINUX_BIN/a9</pre>
+
+<p></p>
+
+<h3 id="Building_Linux_Kernel">  Building Linux Kernel </h3>
+
+<p></p>
+This section presents how to build the Linux kernel used for the boot examples on this page. Refer to <a class="natExternalLink" href="https://rocketboards.org/foswiki/Main/GettingStarted" target="_blank" rel="noopener noreferrer">https://rocketboards.org/foswiki/Main/GettingStarted</a> for complete instructions.
+<p></p>
+Prepare a top folder:
+
+<pre>rm -rf linux &amp;&amp; mkdir linux
+export set LINUX_TOP=`pwd`/linux</pre>
+
+<p></p>
+<strong>Cyclone V and Arria 10</strong>
+<hr>
+Download and setup the toolchain:
+
+<pre>cd $LINUX_TOP
+export ARCH=arm
+export CROSS_COMPILE=arm-none-linux-gnueabihf-</pre>
+
+<p></p>
+Clone the Linux git tree to retrieve the code:
+
+<pre>cd $LINUX_TOP
+git clone https://github.com/altera-opensource/linux-socfpga linux-socfpga.a9
+cd linux-socfpga.a9
+<span class="foswikiBrownFG"># comment out next line to use the latest Linux kernel branch</span>
+git checkout -b test-kernel -t origin/socfpga-5.15.70-lts</pre>
+
+<p></p>
+Note that most Cyclone V SoC DevKits have a 512MB QSPI flash device, while the Linux kernel DTS assumes a 1Gb (128MB) one. If you have the standard 512MB one, change the file <em>linux-socfpga/arch/arm/boot/dts/socfpga_cyclone5_socdk.dts</em> accordingly before building dtbs:
+<pre>    partition@qspi-rootfs {
+         /* 56MB for jffs2 data. */
+         label = "Flash 0 jffs2 Filesystem";
+         reg = &lt;0x800000 0x3800000&gt;;
+      };</pre>
+<p></p>
+The above can be scripted with the following commands:
+
+<pre>sed -i 's/120MB for jffs2 data/56MB for jffs2 data/g' arch/arm/boot/dts/socfpga_cyclone5_socdk.dts
+sed -i 's/&lt;0x800000 0x7800000&gt;;/&lt;0x800000 0x3800000&gt;;/g' arch/arm/boot/dts/socfpga_cyclone5_socdk.dts</pre>
+
+<p></p>
+Build the Linux kernel:
+
+<pre>make socfpga_defconfig
+make -j 48 zImage Image dtbs modules
+make -j 48 modules_install INSTALL_MOD_PATH=modules_install
+rm -rf modules_install/lib/modules/*/build
+rm -rf modules_install/lib/modules/*/source</pre>
+
+<p></p>
+Link all the relevant files to $LINUX_BIN
+
+<pre>ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/zImage $LINUX_BIN/a9/
+ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/Image $LINUX_BIN/a9/
+ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/dts/socfpga_cyclone5_socdk.dtb $LINUX_BIN/a9/
+ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/dts/socfpga_arria10_socdk_sdmmc.dtb $LINUX_BIN/a9/
+ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/dts/socfpga_arria10_socdk_qspi.dtb $LINUX_BIN/a9/
+ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/dts/socfpga_arria10_socdk_nand.dtb $LINUX_BIN/a9/
+ln -s $LINUX_TOP/linux-socfpga.a9/modules_install/lib/modules $LINUX_BIN/a9/</pre>
+
+<p></p>
+The following items are copied in the <em>$LINUX_BIN/a9</em> folder: <table class="foswikiTable"><thead><tr><th><strong>  Item  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td>  zImage  </td>
+<td>  compressed kernel image  </td>
+</tr><tr><td>  Image  </td>
+<td>  uncompressed kernel image  </td>
+</tr><tr><td>  socfpga_cyclone5_socdk.dtb  </td>
+<td>  cyclone v device tree blob for both sdmmc and qspi boot  </td>
+</tr><tr><td>  socfpga_arria10_socdk_sdmmc.dtb  </td>
+<td>  arria 10 device tree blob for sdmmc boot  </td>
+</tr><tr><td>  socfpga_arria10_socdk_qspi.dtb  </td>
+<td>  arria 10 device tree blob for qspi boot  </td>
+</tr><tr><td>  socfpga_arria10_socdk_nand.dtb  </td>
+<td>  arria 10 device tree blob for nand boot  </td>
+</tr><tr><td>  modules  </td>
+<td>  kernel loadable modules  </td>
+</tr></tbody></table>
+
+<p></p>
+<h3 id="Building_Yocto_Rootfs">  Building Yocto Rootfs </h3>
+
+<p></p>
+This section presents how to build the Linux rootfs using Yocto recipes. Note that the yocto recipes actually build everything, but are only interested in the rootfs.
+<p></p>
+First, make sure you have Yocto system requirements met: <a class="natExternalLink" href="https://docs.yoctoproject.org/3.4.1/ref-manual/system-requirements.html#supported-linux-distributions" target="_blank" rel="noopener noreferrer">https://docs.yoctoproject.org/3.4.1/ref-manual/system-requirements.html#supported-linux-distributions</a>. 
+<p></p>
+The command to install the required packages on Ubuntu is:
+<pre>sudo apt install gawk wget git diffstat unzip texinfo gcc build-essential chrpath \
+socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping \
+python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint3 xterm python3-subunit \
+mesa-common-dev zstd liblz4-tool</pre>
+<p></p>
+<strong>Note</strong>: You can also use a Docker container to build the Yocto recipes, refer to <a class="natExternalLink" href="https://rocketboards.org/foswiki/Documentation/DockerYoctoBuild" target="_blank" rel="noopener noreferrer">https://rocketboards.org/foswiki/Documentation/DockerYoctoBuild</a> for details. When using a Docker container, it does not matter what Linux distribution or packages you have installed on your host, as all dependencies are provided by the Docker container.
+<p></p>
+Prepare a top folder:
+
+<pre>cd $LINUX_TOP
+mkdir rootfs &amp;&amp; cd rootfs
+export set ROOTFS_TOP=`pwd`</pre>
+
+<p></p>
+Run the build instructions from the following sections, to obtain the following files in the <em>$LINUX_BIN</em> folder:
+<p></p> <table class="foswikiTable"><thead><tr><th><strong>  File  </strong></th>
+<th><strong>  Description  </strong></th>
+</tr></thead><tbody><tr><td>  a9/core-image-minimal-cyclone5.tar.gz  </td>
+<td>  Cyclone V rootfs archive  </td>
+</tr><tr><td>  a9/core-image-minimal-arria10.tar.gz  </td>
+<td>  Arria 10 rootfs archive  </td>
+</tr></tbody></table>
+<p></p>
+<strong>Cyclone V</strong>
+<hr>
+
+<pre>cd $ROOTFS_TOP
+rm -rf cv &amp;&amp; mkdir cv &amp;&amp; cd cv
+git clone -b honister https://git.yoctoproject.org/poky
+git clone -b honister https://git.yoctoproject.org/meta-intel-fpga
+source poky/oe-init-build-env ./build
+echo 'MACHINE = "cyclone5"' &gt;&gt; conf/local.conf
+echo 'BBLAYERS += " ${TOPDIR}/../meta-intel-fpga "' &gt;&gt; conf/bblayers.conf
+<span class="foswikiBrownFG"># Uncomment next line to add more packages to the image</span>
+<span class="foswikiBrownFG"># echo 'CORE_IMAGE_EXTRA_INSTALL += "openssh gdbserver"' &gt;&gt; conf/local.conf</span>
+bitbake core-image-minimal
+ln -s $ROOTFS_TOP/cv/build/tmp/deploy/images/cyclone5/core-image-minimal-cyclone5.tar.gz $LINUX_BIN/a9/
+</pre>
+
+<p></p>
+
+<strong>Arria 10</strong>
+<hr>
+
+<pre>cd $ROOTFS_TOP
+rm -rf a10 &amp;&amp; mkdir a10 &amp;&amp; cd a10
+git clone -b kirkstone https://git.yoctoproject.org/poky
+git clone -b kirkstone https://git.yoctoproject.org/meta-intel-fpga
+source poky/oe-init-build-env ./build
+echo 'MACHINE = "arria10"' &gt;&gt; conf/local.conf
+echo 'BBLAYERS += " ${TOPDIR}/../meta-intel-fpga "' &gt;&gt; conf/bblayers.conf
+<span class="foswikiBrownFG"># Uncomment next line to add more packages to the image</span>
+<span class="foswikiBrownFG"># echo 'CORE_IMAGE_EXTRA_INSTALL += "openssh gdbserver"' &gt;&gt; conf/local.conf</span>
+bitbake core-image-minimal
+ln -s $ROOTFS_TOP/a10/build/tmp/deploy/images/arria10/core-image-minimal-arria10.tar.gz $LINUX_BIN/a9/
+</pre>
+
+<p></p>
+<h2 id="Appendix_45_Reducing_Arria_10_Fabric_Configuration_Time">  Appendix - Reducing Arria 10 Fabric Configuration Time </h2>
+<p></p>
+Arria 10 FPGA configuration is done in two steps: <ul>
+<li> Configuration of periphery: this allows HPS DDRAM to be brought up, and must do be done in SPL
+</li> <li> Configuration of fabric: it configures the actual FPGA core fabric, and can be done from SPL or U-Boot
+</li></ul> 
+<p></p>
+<span class="foswikiRedFG">Warning</span>: the periphery and fabric configuration files must come from the same Quartus compilation of a hardware project. Combining files from different projects or from different compilations of the same project is not supported.
+<p></p>
+<span class="foswikiRedFG">Warning</span>: the fabric cannot be configured from Linux. If you need to define or change the fabric behavior from Linux, you must use PR (partial reconfiguration).
+<p></p>
+The standard flow configures the Arria 10 FPGA Fabric from the SPL. However, this is a very slow process. This section shows a copuple of options for configuring the fabric from the U-Boot instead of SPL, which is significantly faster.
+<p></p>
+The examples show how to do it when booting from SD card. Similar commands can be used for the QSPI case.
+<p></p>
+<h3 id="Option_351_45_Separate_Configuration_Files">  Option #1 - Separate Configuration Files </h3>
+<p></p>
+In this option, we are moving the FPGA fabric configuration file out of FIT image, and keep it as a separate file.
+<p></p>
+1. Change the file board/altera/arria10-socdk/fit_spl_fpga.its to only configure the periphery, and not the fabric:
+<p></p>
+<pre>/dts-v1/;
+/ {
+   description = "FIT image with FPGA bistream";
+   #address-cells = &lt;1&gt;;
+
+   images {
+      fpga-periph-1 {
+         description = "FPGA peripheral bitstream";
+         data = /incbin/("../../../ghrd_10as066n2.periph.rbf");
+         type = "fpga";
+         arch = "arm";
+         compression = "none";
+      };
+   };
+
+   configurations {
+      default = "config-1";
+      config-1 {
+         description = "Boot with FPGA early IO release config";
+         <span class="foswikiRedFG">fpga = "fpga-periph-1";</span>
+      };
+   };
+};</pre>
+<p></p>
+2. Re-generate the corresponding .itb file - it will be much smaller since it will not include the FPGA fabric configuration file.
+<p></p>
+3. Store the ghrd_10as066n2.core.rbf file on the SD card, to be loaded from U-Boot
+<p></p>
+4. In the U-Boot boot flow, add the instructions to configure the FPGA fabric:
+<p></p>
+<pre>load mmc 0:1 ${loadaddr} ghrd_10as066n2.core.rbf
+fpga load 0 ${loadaddr} ${filesize}</pre>
+<p></p>
+<h3 id="Option_352_45_Combined_Configuration_File">  Option #2 - Combined Configuration File </h3>
+<p></p>
+In this option, we are keeping both configuration files in the same FIT image, but only apply the periphery one in the SPL. Then we are extrating the fabric file from the FIT file and using it in U-Boot to configure the fabric. The advantage is that we are keeping both files in a single place, which can aid in ensuring they are always in sync.
+<p></p>
+1. Change the file board/altera/arria10-socdk/fit_spl_fpga.its to contain the core configuration file, but not apply it in SPL:
+<pre>/dts-v1/;
+/ {
+   description = "FIT image with FPGA bistream";
+   #address-cells = &lt;1&gt;;
+
+   images {
+      fpga-periph-1 {
+         description = "FPGA peripheral bitstream";
+         data = /incbin/("../../../ghrd_10as066n2.periph.rbf");
+         type = "fpga";
+         arch = "arm";
+         compression = "none";
+      };
+
+      <span class="foswikiRedFG">fpga-core-1 {
+         description = "FPGA core bitstream";
+         data = /incbin/("../../../ghrd_10as066n2.core.rbf");
+         type = "fpga";
+         arch = "arm";
+         compression = "none";
+      };</span>
+   };
+
+   configurations {
+      default = "config-1";
+      config-1 {
+         description = "Boot with FPGA early IO release config";
+         fpga = "fpga-periph-1"
+      };
+   };
+};</pre>
+<p></p>
+2. In the U-Boot boot flow, add the instructions to load the FPGA fabric file from the FIT file, and configure the fabric with it:
+<pre>setenv coreaddr 0x1000000
+load mmc 0:1 ${loadaddr} fit_spl_fpga.itb
+imxtract ${loadaddr} fpga-core-1 ${coreaddr}
+fpga load 0 ${coreaddr} ${filesize}</pre>
+<p></p>
+Note the the coreaddr size must be chosen to that it does not interfere with other U-Boot components or already loaded boot items.
+<p></p>
+<h2 id="Appendix_45_Running_U_45Boot_with_the_Debugger_from_Command_Line">  Appendix - Running U-Boot with the Debugger from Command Line </h2>
+<p></p>
+This section presents examples of how to run U-Boot with the Arm Development Studio from command line. This offers a simple and convenient way to run U-Boot and use it for example to program onboard flash.
+<p></p>
+<h3 id="Cyclone_V_SoC_45_Run_U_45Boot_from_Debugger">  Cyclone V SoC - Run U-Boot from Debugger </h3>
+<p></p>
+1. Use the binaries built for the <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Cyclone_V_SoC_45_Boot_from_SD_Card">Cyclone V SoC Boot from SD Card</a> example:
+<pre>cd cv_example.sdmmc</pre>
+<p></p>
+2. Create debugger script:
+<pre>cat &lt;&lt;EOT &gt; cv_soc_devkit_ghrd/software/bootloader/run-u-boot.ds
+<span class="foswikiBrownFG"># initialize system</span>
+stop
+wait 5s
+reset
+stop
+wait 5s
+set trust-ro-sections-for-opcodes off
+
+<span class="foswikiBrownFG"># load and run SPL</span>
+loadfile u-boot-socfpga/spl/u-boot-spl 0x0
+start
+wait
+restore u-boot-socfpga/spl/u-boot-spl-dtb.bin binary 0xffff0000
+tbreak spl_boot_device
+<span class="foswikiRedFG"># ← stop script here if you need to debug SPL</span>
+continue
+wait 60s
+
+<span class="foswikiBrownFG"># load and run U-Boot</span>
+delete
+loadfile u-boot-socfpga/u-boot
+start 
+wait
+restore u-boot-socfpga/u-boot.dtb binary &amp;_end
+<span class="foswikiGrayFG"># tbreak relocate_code
+# continue
+# wait 60s
+# symbol-file "\$sdir/u-boot-socfpga/u-boot" ((gd_t*)\$r9)-&gt;reloc_off
+# thbreak board_init_r
+# continue
+# wait 60s</span>
+<span class="foswikiRedFG"># ← stop script here if you need to debug U-Boot</span>
+continue
+EOT</pre>
+<p></p>
+4. Run <code>jtagconfig</code> to determine the connection parameters:
+<pre><span class="foswikiBlueFG">~/intelFPGA_pro/22.1std/nios2eds/nios2_command_shell.sh</span> jtagconfig
+1) USB-BlasterII [3-3.1.3]
+  4BA00477   SOCVHPS
+  02D020DD   5CSEBA6(.|ES)/5CSEMA6/..</pre>
+<p></p>
+5. Run the debugger from command line, using the connection parameters reported above by <code>jtagconfig</code>, shown in <span class="foswikiRedFG">red</span> below:
+<pre>cd cv_soc_devkit_ghrd/software/bootloader
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.1std/nios2eds/nios2_command_shell.sh</span> \
+<span class="foswikiBlueFG">/opt/arm/developmentstudio-2021.1/bin/armdbg</span>  \
+--cdb-entry="Intel SoC FPGA::Cyclone V SoC (Dual Core)::Bare Metal Debug::Bare Metal Debug::Debug Cortex-A9_0::USB-Blaster" \
+--cdb-entry-param="rvi_address=<span class="foswikiRedFG">USB-BlasterII</span> on localhost [<span class="foswikiRedFG">3-3.1.3</span>]:<span class="foswikiRedFG">USB-BlasterII 3-3.1.3</span>" \
+--continue_on_error=true \
+--stop_on_connect=false \
+-s run-u-boot.ds</pre>
+<p></p>
+6. The serial console will show SPL then U-Boot being run:
+<pre>U-Boot SPL 2020.10-10892-gced41867be-dirty (Mar 16 2021 - 20:13:21 -0500)
+DDRCAL: Scrubbing ECC RAM (1024 MiB).
+DDRCAL: SDRAM-ECC initialized success with 579 ms
+
+U-Boot 2020.10-10892-gced41867be-dirty (Mar 16 2021 - 20:13:21 -0500)
+CPU:   Altera SoCFPGA Platform
+FPGA:  Altera Cyclone V, SE/A6 or SX/C6 or ST/D6, version 0x0
+BOOT:  SD/MMC Internal Transceiver (3.0V)
+       Watchdog enabled
+DRAM:  1 GiB
+MMC:   dwmmc0@ff704000: 0
+Loading Environment from MMC… Card did not respond to voltage select!
+*** Warning - No block device, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Model: Altera SOCFPGA Cyclone V SoC Development Kit
+Net:   
+Warning: ethernet@ff702000 (eth0) using random MAC address - 9a:6b:16:ac:03:c1
+eth0: ethernet@ff702000
+Hit any key to stop autoboot:  0
+=&gt; </pre>
+<p></p>
+<h3 id="Arria_10_SoC_45_Run_U_45Boot_from_Debugger">  Arria 10 SoC - Run U-Boot from Debugger </h3>
+<p></p>
+1. Use the binaries built for the <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Arria_10_SoC_45_Boot_from_SD_Card">Arria 10 SoC Boot From SD Card</a> example:
+<pre>cd arria10_example.sdmmc</pre>
+<p></p>
+2. Create debugger script:
+<pre>cat &lt;&lt;EOT &gt; a10_soc_devkit_ghrd/software/bootloader/run-u-boot.ds
+
+<span class="foswikiBrownFG"># initialize system</span>
+stop
+wait 5s
+reset
+stop
+wait 5s
+set trust-ro-sections-for-opcodes off
+
+<span class="foswikiBrownFG"># load spl and run up until the warm reset</span>
+restore u-boot-socfpga/spl/u-boot-spl-dtb.bin binary 0xFFE00000
+symbol-file u-boot-socfpga/spl/u-boot-spl
+set \$PC = \$ENTRYPOINT
+thbreak *0x0
+<span class="foswikiRedFG"># ← stop script here if you need to debug first pass of SPL</span>
+continue
+wait 60s
+
+<span class="foswikiBrownFG"># load spl again and run up until spl_boot_device</span>
+restore u-boot-socfpga/spl/u-boot-spl-dtb.bin binary 0xFFE00000
+symbol-file u-boot-socfpga/spl/u-boot-spl
+set \$PC = \$ENTRYPOINT
+thbreak *0x0
+thbreak spl_boot_device
+<span class="foswikiRedFG"># ← stop script here if you need to debug second pass of SPL</span>
+continue
+wait 60s
+
+<span class="foswikiBrownFG"># load u-boot and run up to board_init_r</span>
+delete
+loadfile u-boot-socfpga/u-boot
+start 
+wait
+restore u-boot-socfpga/u-boot.dtb binary &amp;_end
+thbreak relocate_code
+continue
+wait 60s
+symbol-file u-boot-socfpga/u-boot ((gd_t*)\$r9)-&gt;reloc_off
+thbreak board_init_r
+continue
+wait 60s
+<span class="foswikiRedFG"># ← stop script here if you need to debug U-Boot</span>
+continue
+
+EOT</pre>
+<p></p>
+3. Configure the FPGA fabric:
+<pre><span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+quartus_pgm -c 1 -m jtag -o "p;a10_soc_devkit_ghrd/output_files/ghrd_10as066n2.sof"</pre>
+<p></p>
+4. Run <code>jtagconfig</code> to determine the connection parameters:
+<pre><span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> jtagconfig
+1) USB-BlasterII [3-3.1.1]
+  02E050DD   10AS066H(1|2|3|3E2|4|4E2)/..
+  4BA00477   SOCVHPS</pre>
+<p></p>
+5. Run the debugger from command line, using the connection parameters reported above by <code>jtagconfig</code>, shown in <span class="foswikiRedFG">red</span> below:
+<pre>cd a10_soc_devkit_ghrd/software/bootloader
+<span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+<span class="foswikiBlueFG">/opt/arm/developmentstudio-2021.1/bin/armdbg</span>  \
+--cdb-entry="Intel SoC FPGA::Arria 10 SoC::Bare Metal Debug::Bare Metal Debug::Debug Cortex-A9_0::USB-Blaster" \
+--cdb-entry-param="rvi_address=<span class="foswikiRedFG">USB-BlasterII</span> on localhost [<span class="foswikiRedFG">3-3.1.1</span>]:<span class="foswikiRedFG">USB-BlasterII 3-3.1.1</span>" \
+--continue_on_error=true \
+--stop_on_connect=false \
+-s run-u-boot.ds</pre>
+<p></p>
+6. The serial console will show SPL then U-Boot being run:
+<pre>U-Boot SPL 2020.10-10892-gced41867be (Mar 16 2021 - 20:34:59 -0500)
+
+U-Boot SPL 2020.10-10892-gced41867be (Mar 16 2021 - 20:34:59 -0500)
+DDRCAL: Success
+DDRCAL: Scrubbing ECC RAM (1024 MiB).
+DDRCAL: SDRAM-ECC initialized success with 146 ms
+WDT:   Started with servicing (30s timeout)
+
+U-Boot 2020.10-10892-gced41867be (Mar 16 2021 - 20:34:59 -0500)socfpga_arria10
+
+CPU:   Altera SoCFPGA Arria 10
+BOOT:  SD/MMC External Transceiver (1.8V)
+Model: Altera SOCFPGA Arria 10
+DRAM:  1 GiB
+WDT:   Started with servicing (30s timeout)
+MMC:   dwmmc0@ff808000: 0
+Loading Environment from MMC… *** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Model: Altera SOCFPGA Arria 10
+Net:   
+Warning: ethernet@ff800000 (eth0) using random MAC address - 4a:11:d5:65:72:c5
+eth0: ethernet@ff800000
+Hit any key to stop autoboot:  0 
+=&gt; </pre>
+<p></p>
+<h2 id="Appendix_45_Debugging_U_45Boot_with_Arm_DS_Eclipse">  Appendix - Debugging U-Boot with Arm DS Eclipse </h2>
+<p></p>
+This section presents examples of how to debug U-Boot with from the Arm Development Studio Eclipse-based GUI.
+<p></p>
+<h3 id="Cyclone_V_SoC_45_Debugging_U_45Boot">  Cyclone V SoC - Debugging U-Boot </h3>
+<p></p>
+<strong>Debugging SPL</strong>
+<hr>
+<p></p>
+1. Use the binaries built for the <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Cyclone_V_SoC_45_Boot_from_SD_Card">Cyclone V SoC Boot from SD Card</a> example:
+<pre>cd cv_example.sdmmc/software/bootloader</pre>
+<p></p>
+2. Start the Arm Development Studio Eclipse-based GUI:
+<pre><span class="foswikiBlueFG">~/intelFPGA/22.1std/nios2eds/nios2_command_shell.sh</span> \
+/opt/arm/developmentstudio-2021.1/bin/armds_ide -data workspace &amp;</pre>
+Note the above creates a new workspace in the <code>cv_example.sdmmc/software/bootloader</code> folder.
+<p></p>
+3. In <strong>Eclipse</strong>,  Go to <strong>Run &gt; Debug Configurations</strong> to open the <strong>Debug Configurations</strong> window.
+<p></p>
+4. In the <strong>Debug Configurations</strong> window <ul>
+<li> Select the <strong>Generic Arm C/C++ Application</strong> on the left panel and right-click it. From the menu that appears, select <strong>New Configuration</strong>. 
+</li> <li> Edit the <strong>Name</strong> field from "New_configuration" to something more descriptive, such as "Debug Cyclone V Bootloader"
+</li></ul> 
+5. In the <strong>Connection</strong> tab: <ul>
+<li> Go to <strong>Select target</strong> section and select <strong>Intel SoC FPGA &gt; Cyclone V SoC (Dual Core) &gt; Bare Metal Debug &gt; Debug Cortex-A9_0</strong>
+</li> <li> Select the <strong>Target Connection</strong> to be <strong>USB Blaster</strong>
+</li> <li> Click the <strong>Bare Metal Debug &gt; Connection</strong>  <strong>Browse</strong> button and select your cable.
+</li></ul> 
+The <strong>Debug Configurations</strong> window should now look like this:
+<img src="./SOP_C5SOC_files/cv-ds-boot-config.png" class="imagePlain imagePlain_none " alt="cv-ds-boot-config.png" title="cv-ds-boot-config.png" width="936" height="698"><p></p>
+6. Go to the <strong>Debugger</strong> tab, and do the following <ul>
+<li> Select <strong>Connect Only</strong>
+</li> <li> Check <strong>Execute debugger commands</strong> and enter the following commands:
+</li></ul> 
+<pre><span class="foswikiBrownFG"># initialize system</span>
+stop
+wait 5s
+reset
+stop
+wait 5s
+set trust-ro-sections-for-opcodes off
+
+<span class="foswikiBrownFG"># load and start SPL</span>
+loadfile u-boot-socfpga/spl/u-boot-spl 0x0
+start
+wait
+restore u-boot-socfpga/spl/u-boot-spl-dtb.bin binary 0xffff0000
+</pre> <ul>
+<li> Uncheck <strong>Host working directory &gt; Use default</strong> and edit the value to add "/../" so that it looks in the parent folder of the workspace
+</li></ul> 
+The <strong>Debug Configurations</strong> window should now look like this:
+<img src="./SOP_C5SOC_files/cv-ds-boot-spl-debugger.png" class="imagePlain imagePlain_none " alt="cv-ds-boot-spl-debugger.png" title="cv-ds-boot-spl-debugger.png" width="936" height="698"> 
+<p></p>
+7. Click the <strong>Debug</strong> button. Arm Development Studio will run the commands, therefore downloading the SPL to board and starting it.
+The Eclipse window should now look like this:
+<img src="./SOP_C5SOC_files/cv-ds-boot-spl-started.png" class="imagePlain imagePlain_none " alt="cv-ds-boot-spl-started.png" title="cv-ds-boot-spl-started.png" width="936" height="678"> 
+<p></p>
+8. At this point you can use standard debug techniques to debug U-Boot SPL: viewing registers, variables, putting breakpoints, running step-by-step etc.
+<p></p>
+<strong>Debugging U-Boot</strong>
+<hr>
+<p></p>
+Debugging U-Boot is similiar with debugging SPL, just that a different script is used, as shown below:
+<p></p>
+<pre><span class="foswikiBrownFG"># initialize system</span>
+stop
+wait 5s
+reset
+stop
+wait 5s
+set trust-ro-sections-for-opcodes off
+
+<span class="foswikiBrownFG"># load SPL and run up until spl_boot_device</span>
+loadfile u-boot-socfpga/spl/u-boot-spl 0x0
+start
+wait
+restore u-boot-socfpga/spl/u-boot-spl.dtb binary &amp;__bss_end
+thbreak spl_boot_device
+continue
+wait 60s
+
+<span class="foswikiBrownFG"># load and start U-Boot</span>
+delete
+loadfile u-boot-socfpga/u-boot
+start 
+wait
+restore u-boot-socfpga/u-boot.dtb binary &amp;_end
+
+<span class="foswikiBrownFG"># run until relocation, and adjust symbols accordingly</span>
+thbreak relocate_code
+cont
+wait 60s
+symbol-file u-boot-socfpga/u-boot ((gd_t*)$r9)-&gt;reloc_off
+thbreak board_init_r
+continue
+wait 60s</pre>
+<h3 id="Arria_10_SoC_45_Debugging_U_45Boot">  Arria 10 SoC - Debugging U-Boot </h3>
+<p></p>
+<strong><em>Important Note</em></strong>: U-Boot tries to initialize the SD card, so you need to have one installed in this example. It is preferrable to have an empty one, which will not try to boot Linux for example when you power up the board, which may interfere with debugging. If you do not have an empty SD card, you can power up the board without an SD card, then insert the SD card when you start debugging.
+<p></p>
+<strong>Debugging SPL</strong>
+<hr>
+<p></p>
+1. Use the binaries built for the <a class="foswikiCurrentTopicLink" href="https://www.rocketboards.org/foswiki/Documentation/BuildingBootloaderCycloneVAndArria10#Arria_10_SoC_45_Boot_from_SD_Card">Arria 10 SoC Boot From SD Card</a> example:
+<pre>cd arria10_example.sdmmc</pre>
+<p></p>
+2. Configure the FPGA fabric:
+<pre><span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+quartus_pgm -c 1 -m jtag -o "p;a10_soc_devkit_ghrd/output_files/ghrd_10as066n2.sof"</pre>
+<p></p>
+3. Go to the bootloder folder
+<pre>cd a10_soc_devkit_ghrd/software/bootloader</pre>
+<p></p>
+4. Start the Arm Development Studio Eclipse-based GUI:
+<pre><span class="foswikiBlueFG">~/intelFPGA_pro/22.4/nios2eds/nios2_command_shell.sh</span> \
+/opt/arm/developmentstudio-2021.1/bin/armds_ide -data workspace &amp;</pre>
+Note the above creates a new workspace in the <code>arria10_example.sdmmc/software/bootloader</code> folder.
+<p></p>
+5. In <strong>Eclipse</strong>,  Go to <strong>Run &gt; Debug Configurations</strong> to open the <strong>Debug Configurations</strong> window.
+<p></p>
+4. In the <strong>Debug Configurations</strong> window <ul>
+<li> Select the <strong>Generic Arm C/C++ Application</strong> on the left panel and right-click it. From the menu that appears, select <strong>New Configuration</strong>. 
+</li> <li> Edit the <strong>Name</strong> field from "New_configuration" to something more descriptive, such as "Debug Arria 10 Bootloader"
+</li></ul> 
+5. In the <strong>Connection</strong> tab: <ul>
+<li> Go to <strong>Select target</strong> section and select <strong>Intel SoC FPGA &gt; Arria 10 &gt; Bare Metal Debug &gt; Debug Cortex-A9_0</strong>
+</li> <li> Select the <strong>Target Connection</strong> to be <strong>Intel FPGA Download Cable</strong>
+</li> <li> Click the <strong>Bare Metal Debug &gt; Connection</strong>  <strong>Browse</strong> button and select your cable.
+</li></ul> 
+The <strong>Debug Configurations</strong> window should now look like this:
+<img src="./SOP_C5SOC_files/a10-ds-boot-config.png" class="imagePlain imagePlain_none " alt="a10-ds-boot-config.png" title="a10-ds-boot-config.png" width="936" height="714"><p></p>
+6. Go to the <strong>Debugger</strong> tab, and do the following <ul>
+<li> Select <strong>Connect Only</strong>
+</li> <li> Check <strong>Execute debugger commands</strong> and enter the following commands:
+</li></ul> 
+<pre><span class="foswikiBrownFG"># initialize system</span>
+stop
+wait 5s
+reset
+stop
+wait 5s
+set trust-ro-sections-for-opcodes off
+
+<span class="foswikiBrownFG"># load and start SPL</span>
+restore u-boot-socfpga/spl/u-boot-spl-dtb.bin binary 0xFFE00000
+symbol-file u-boot-socfpga/spl/u-boot-spl
+set $PC = $ENTRYPOINT
+</pre> <ul>
+<li> Uncheck <strong>Host working directory &gt; Use default</strong> and edit the value to add "/../" so that it looks in the parent folder of the workspace
+</li></ul> 
+The <strong>Debug Configurations</strong> window should now look like this:
+<img src="./SOP_C5SOC_files/a10-ds-boot-spl-debugger.png" class="imagePlain imagePlain_none " alt="a10-ds-boot-spl-debugger.png" title="a10-ds-boot-spl-debugger.png" width="936" height="718"> 
+<p></p>
+7. Click the <strong>Debug</strong> button. Arm Development Studio will run the commands, therefore downloading the SPL to board and starting it.
+The Eclipse window should now look like this:
+<img src="./SOP_C5SOC_files/a10-ds-boot-spl-started.png" class="imagePlain imagePlain_none " alt="a10-ds-boot-spl-started.png" title="a10-ds-boot-spl-started.png" width="936" height="679"> 
+<p></p>
+8. At this point you can use standard debug techniques to debug U-Boot SPL: viewing registers, variables, putting breakpoints, running step-by-step etc.
+<p></p>
+<strong><em>Important Note</em></strong>: On Arria 10, after a cold reset, the U-Boot SPL runs up to a point, early in the initialization process, then it issues a warm reset and it runs again from the beginning, with a slightly different flow. This is done in order to work around a specific hardware issue. Typically you want to focus on the 2nd time the SPL is ran, and you can do this by using the following script instead:
+<p></p>
+<pre><span class="foswikiBrownFG"># initialize system</span>
+stop
+wait 5s
+reset
+stop
+wait 5s
+set trust-ro-sections-for-opcodes off
+
+<span class="foswikiBrownFG"># load SPL and run up until the warm reset</span>
+restore u-boot-socfpga/spl/u-boot-spl-dtb.bin binary 0xFFE00000
+symbol-file u-boot-socfpga/spl/u-boot-spl
+set $PC = $ENTRYPOINT
+thbreak *0x0
+continue
+wait 60s
+
+<span class="foswikiBrownFG"># load SPL again and start it</span>
+restore u-boot-socfpga/spl/u-boot-spl-dtb.bin binary 0xFFE00000
+symbol-file u-boot-socfpga/spl/u-boot-spl
+set $PC = $ENTRYPOINT</pre>
+<p></p>
+<strong>Debugging U-Boot</strong>
+<hr>
+<p></p>
+Debugging U-Boot is similiar with debugging SPL, just that a different script is used, as shown below:
+<p></p>
+<pre><span class="foswikiBrownFG"># initialize system</span>
+stop
+wait 5s
+reset
+stop
+wait 5s
+set trust-ro-sections-for-opcodes off
+
+<span class="foswikiBrownFG"># load SPL and run up until the warm reset</span>
+restore u-boot-socfpga/spl/u-boot-spl-dtb.bin binary 0xFFE00000
+symbol-file u-boot-socfpga/spl/u-boot-spl
+set $PC = $ENTRYPOINT
+thbreak *0x0
+continue
+wait 60s
+
+<span class="foswikiBrownFG"># load SPL again and run up until spl_boot_device</span>
+restore u-boot-socfpga/spl/u-boot-spl-dtb.bin binary 0xFFE00000
+symbol-file u-boot-socfpga/spl/u-boot-spl
+set $PC = $ENTRYPOINT
+thbreak spl_boot_device
+continue
+wait 60s
+
+<span class="foswikiBrownFG"># load and start U-Boot</span>
+delete
+loadfile u-boot-socfpga/u-boot
+start 
+wait
+restore u-boot-socfpga/u-boot.dtb binary &amp;_end
+
+<span class="foswikiBrownFG"># run until relocation, and adjust symbols accordingly</span>
+thbreak relocate_code
+cont
+wait 60s
+symbol-file u-boot-socfpga/u-boot ((gd_t*)$r9)-&gt;reloc_off
+thbreak board_init_r
+continue
+wait 60s</pre>
+<p></p>
+<p></p>
+<h2 id="Appendix_45_Customizing_Arria_10_GHRD_Recipes_for_Custom_Board">  Appendix - Customizing Arria 10 GHRD Recipes for Custom Board </h2>
+<p></p>
+Refer to this KDB link for more information: <a class="natExternalLink" href="https://www.intel.com/content/www/us/en/support/programmable/articles/000090551.html" target="_blank" rel="noopener noreferrer">https://www.intel.com/content/www/us/en/support/programmable/articles/000090551.html</a>
+<p></p>
+<h2 id="Page_Revision_History">  Page Revision History </h2>
+<p></p> <table class="foswikiTable"><thead><tr><th><strong> Page Revision </strong></th>
+<th><strong> Changes </strong></th>
+</tr></thead><tbody><tr><td>  Rev. 38  </td>
+<td>  Added new section: Appendix - Customizing Arria 10 GHRD Recipes for Custom Board and Page Revision History   </td>
+</tr><tr><td>  Rev 37 </td>
+<td>  Quartus Pro v22.4 Binary Release update for Arria 10  </td>
+</tr><tr><td>  Rev 32  </td>
+<td>  Quartus Std v22.1 Release update for Cyclone V, replacement of qts-filter.sh to cv_bsp_generator.py  </td>
+</tr><tr><td>  Rev 27  </td>
+<td>  Quartus Pro v22.3 Binary Release update for Arria 10  </td>
+</tr><tr><td>  Rev 23  </td>
+<td>  Quartus Pro v22.2 Binary Release update for Arria 10  </td>
+</tr><tr><td>  Rev 20  </td>
+<td>  Quartus Pro v22.1 Binary Release update for Arria 10  </td>
+</tr></tbody></table>
+
+<span id="ContentBottom"></span></div>
+<div class="natMainFooterContents">
+
+<span class="foswikiClear"></span><div class="foswikiMetaData foswikiHideOnPrint foswikiMetaDataNotAllowed" style="display:none">
+<div class="jqTabPane jqTabPanePlain jqInitedTabpane" id="tabpane0" data-select="1" data-auto-max-expand="false" data-animate="true" data-remember="true" data-min-height="0"><ul class="jqTabGroup clearfix"></ul><span class="foswikiClear"></span>
+</div></div>
+
+<form id="editSettingsForm" name="editSettingsForm" class="foswikiHidden" action="https://www.rocketboards.org/foswiki/manage/Documentation/BuildingBootloaderCycloneVAndArria10" method="post" onsubmit="StrikeOne.submit(this)"><input type="hidden" name="validation_key" value="?ed83af794d0a987ff67318173614501a"> 
+  <input type="hidden" name="action" value="editSettings"> 
+</form>
+</div>
+</div>
+</div>
+</div>
+<div class="natBottomBar"><div class="natBottomBarContents">
+<div class="foswikiCenter">
+<div class="rbSocialNetworkLinks">
+<a class="natExternalLink" href="https://www.facebook.com/IntelFPGA" target="_blank" rel="noopener noreferrer"><i class="foswikiIcon jqIcon fa fa-facebook"></i></a>
+<a class="natExternalLink" href="https://twitter.com/IntelFPGA" target="_blank" rel="noopener noreferrer"><i class="foswikiIcon jqIcon fa fa-twitter"></i></a>
+<a class="natExternalLink" href="https://www.linkedin.com/showcase/intelfpga/" target="_blank" rel="noopener noreferrer"><i class="foswikiIcon jqIcon fa fa-linkedin"></i></a>
+<a href="https://www.rocketboards.org/foswiki/Documentation/WebRss"><i class="foswikiIcon jqIcon fa fa-rss"></i></a>
+</div>
+<p></p>
+<div class="natCopyRight">© 1999-2023 RocketBoards.org by the contributing authors. All material on this collaboration platform is the property of the contributing authors. <a class="natExternalLink" href="https://www.intel.com/content/www/us/en/privacy/intel-privacy-notice/intel-privacy-notice-archive-jan2016.html" target="_blank" rel="noopener noreferrer">Privacy</a>. </div>
+</div>
+
+</div></div>
+<a class="natScrollTop jqScrollToLink {&#39;target&#39;:&#39;0&#39;, &#39;duration&#39;:500}" title="back to the top" style="display: inline;"><i class="foswikiIcon jqIcon fa fa-angle-double-up"></i></a>
+<span id="PageBottom"></span>
+</div>
+<div class="farscroll-clone" style="position: fixed; overflow: auto; width: 1120px; height: 18px; background: rgba(0, 0, 0, 0.05); top: 680px; left: 200.5px; display: none;"><div style="width: 1179px; height: 1px;"></div></div><div class="farscroll-clone" style="position: fixed; overflow: auto; width: 1120px; height: 18px; background: rgba(0, 0, 0, 0.05); top: 680px; left: 200.5px; display: none;"><div style="width: 2823px; height: 1px;"></div></div><div class="farscroll-clone" style="position: fixed; overflow: auto; width: 1120px; height: 18px; background: rgba(0, 0, 0, 0.05); top: 680px; left: 200.5px; display: none;"><div style="width: 2831px; height: 1px;"></div></div><div class="farscroll-clone" style="position: fixed; overflow: auto; width: 1120px; height: 18px; background: rgba(0, 0, 0, 0.05); top: 680px; left: 200.5px; display: none;"><div style="width: 1499.5px; height: 1px;"></div></div><div class="farscroll-clone" style="position: fixed; overflow: auto; width: 1120px; height: 18px; background: rgba(0, 0, 0, 0.05); top: 680px; left: 200.5px; display: none;"><div style="width: 2823px; height: 1px;"></div></div><div class="farscroll-clone" style="position: fixed; overflow: auto; width: 1120px; height: 18px; background: rgba(0, 0, 0, 0.05); top: 680px; left: 200.5px; display: none;"><div style="width: 2831px; height: 1px;"></div></div><div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div><div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div><ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-front ui-autosuggest natSearchBoxMenu" unselectable="on" style="display: none;"></ul><div role="status" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div></body></html>

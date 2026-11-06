@@ -1,0 +1,396 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
+	<meta name="created" content="2023-04-29T06:51:23.848651929"/>
+	<meta name="changed" content="2023-05-02T22:34:23.484736577"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.79in }
+		p { margin-bottom: 0.1in; background: transparent; line-height: 115%; background: transparent }
+		td p { background: transparent; background: transparent }
+		th p { background: transparent; font-weight: bold; text-align: center; background: transparent }
+		em { font-style: italic }
+		strong { font-weight: bold }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><p align="center" style="margin-bottom: 0in; font-variant: normal; line-height: 100%; text-decoration: none">
+<font color="#111111"><span style="background: transparent"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="6" style="font-size: 22pt"><span lang="zh-TW"><span style="font-style: normal"><b>產生
+</b></span></span></font></font></span></font><font face="aaker"><font size="6" style="font-size: 22pt"><span lang="en-US"><span style="font-style: normal"><b>SPL
+&amp; U-Boot</b></span></span></font></font></span></font></p>
+<p align="left" style="margin-bottom: 0in; font-variant: normal; line-height: 120%; text-decoration: none">
+<font color="#111111"><span style="background: transparent"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font color="#000000"><u><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="zh-TW">下載
+</span></font></font></u></font></span></font><font color="#000000"><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="en-US"><span style="font-style: normal"><u><b>Toolchain
+</b></u></span></span></font></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><u><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="zh-TW">並把環境設好</span></font></font></u></span></font></span></font></p>
+<ul>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+	<font color="#111111"><span style="background: transparent"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">假設</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">我們在
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">/home</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><i><span style="font-weight: normal">也就是
+	</span></i></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><i>~</i></span></font></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal">/</span></span></font></font>
+	<font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">裡面放了一個名字為
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">cv_example.sdmmc
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">的資料夾</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">我們將會把
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">sockit
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">的
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">Quartus
+	project </span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">放在這邊</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">資料夾叫
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">arrow-sockit-ghrd</span></font></font></span></font></p>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+	<font color="#111111"><span style="background: transparent"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">請設定好環境以便後面有一些檔案要
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">copy
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">來
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">copy
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">去</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">.
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">連來連去之類的</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US">.
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">同時按
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">Ctrl
+	+ Alt + t </span></span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">打開
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">Terminal</span></span></span></font></font></span></font></p>
+</ul>
+<p style="margin-left: 0.79in; margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+<font color="#111111"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$cd
+~/cv_example.sdmmc</span></font></font></font></p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+<font color="#111111"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$export
+set TOP_FOLDER=`pwd`</span></font></font></font></p>
+<ul>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none"><a name="docs-internal-guid-ac4dfaba-7fff-68bb-20d5-d3046522b178"></a>
+	<font color="#111111"><span style="background: transparent"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">同時按
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">Ctrl
+	+ Alt + t </span></span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">打開
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">Terminal(
+	</span></span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">如果之前的步驟你沒有把
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">Terminal
+	</span></span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">關掉</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">,
+	</span></span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">請直接用哪一個未關的
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">Terminal)</span></span></span></font></font></span></font></p>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+	<font color="#111111"><span style="background: transparent"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><span style="font-style: normal"><span style="font-weight: normal">下載以及設定
+	</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">Toolchain</span></span></span></font></font></span></font></p>
+</ul>
+<p align="left" style="margin-left: 0.79in; margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none"><a name="docs-internal-guid-ba624e1e-7fff-da18-03a5-0a069fea9acc"></a>
+<font color="#111111"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$cd
+~/</span></font></font></font></p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; text-decoration: none">
+<font color="#111111"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$mkdir
+toolchain</span></font></font></font></p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; text-decoration: none">
+<font color="#111111"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$wget
+https://developer.arm.com/-/media/Files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz</span></font></font></font></p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; text-decoration: none">
+<font color="#111111"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$tar
+xf gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz </span></font></font></font>
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; font-variant: normal; line-height: 120%; text-decoration: none">
+<font color="#111111"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: transparent">$rm
+gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
+(</span></span></span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font color="#ff0000"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">刪除下載的壓縮檔</span></span></span></font></font></font></span></font><font color="#ff0000"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">,
+</span></span></span></font></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US">這一個步驟</span></font></font><font color="#ff0000"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">可以不做</span></span></span></font></font></font></span></font><font color="#ff0000"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">,
+</span></span></span></font></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font color="#ff0000"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">把檔案移到別的地方</span></span></span></font></font></font></span></font><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">)
+</span></span></span></font></font></font>
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; line-height: 120%">
+<font color="#111111"><span style="font-variant: normal"><span style="text-decoration: none"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: transparent">$export
+PATH=`pwd`/gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf/bin:$PATH
+(</span></span></span></span></font></font></span></span><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><font color="#ff0000"><span style="text-decoration: none"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">讓系統知道你要用的
+</span></span></span></font></font></span></font></span></span></font><span style="font-variant: normal"><font color="#ff0000"><span style="text-decoration: none"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">Toolchain
+</span></span></span></font></font></span></font></span><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><font color="#ff0000"><span style="text-decoration: none"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">路徑</span></span></span></font></font></span></font></span></span></font><span style="font-variant: normal"><font color="#ff0000"><span style="text-decoration: none"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">,
+</span></span></span></font></font></span></font></span><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><font color="#ff0000"><span style="text-decoration: none"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">重新開
+</span></span></span></font></font></span></font></span></span></font><span style="font-variant: normal"><font color="#ff0000"><span style="text-decoration: none"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">Terminal
+</span></span></span></font></font></span></font></span><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><font color="#ff0000"><span style="text-decoration: none"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">都要設定一次</span></span></span></font></font></span></font></span></span></font><span style="font-variant: normal"><span style="text-decoration: none"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">)</span></span></span></font></font></span></span></font></p>
+<p style="margin-bottom: 0in; line-height: 120%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 120%"><a name="docs-internal-guid-f295b619-7fff-e112-17f3-1b9702d77dfe"></a>
+<font color="#111111"><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="en-US"><span style="font-style: normal"><u><b><span style="background: transparent">SPL
+</span></b></u></span></span></font></font></span></font></span><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><u><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="en-US"><span style="font-style: normal"><b>的產出</b></span></span></font></font></u></span></font></span></span></font><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="en-US"><span style="font-style: normal"><u><span style="font-weight: normal">,
+</span></u></span></span></font></font></span></font></span><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><u><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">會在
+“</span></span></span></font></font></u></span></font></span></span></font><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="en-US"><span style="font-style: normal"><u><span style="font-weight: normal">arrow-sockit-ghrd”
+</span></u></span></span></font></font></span></font></span><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><u><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">這一個資料夾裡面產生</span></span></span></font></font></u></span></font></span></span></font><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="en-US"><span style="font-style: normal"><u><span style="font-weight: normal">4</span></u></span></span></font></font></span></font></span><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><u><font face="aaker"><font size="4" style="font-size: 16pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">個檔案跟兩個資料夾</span></span></span></font></font></u></span></font></span></span></font></font></p>
+<ul>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+	<font color="#000000"><font face="aaker"><font size="3" style="font-size: 12pt"><span style="background: transparent">software/bootloader/Makefile</span></font></font></font></p>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+	<font color="#000000"><font face="aaker"><font size="3" style="font-size: 12pt"><span style="background: transparent">software/preloader.ds</span></font></font></font></p>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+	<font color="#000000"><font face="aaker"><font size="3" style="font-size: 12pt"><span style="background: transparent">software/settings.bsp</span></font></font></font></p>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+	<font color="#000000"><font face="aaker"><font size="3" style="font-size: 12pt"><span style="background: transparent">software/uboot.ds</span></font></font></font></p>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+	<font color="#000000"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: transparent">software/bootloader/generated
+	(</span></span></span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">這邊會有很多檔案</span></span></span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">)</span></span></span></font></font></font></p>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+	<font color="#000000"><span style="font-variant: normal"><span style="text-decoration: none"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: transparent">software/bootloader/u-boot-socfpga
+	(</span></span></span></span></font></font></span></span><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><span style="text-decoration: none"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">這邊會有很多檔案</span></span></span></font></font></span></span></span></font><span style="font-variant: normal"><span style="text-decoration: none"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">)</span></span></span></font></font></span></span></font></p>
+</ul>
+<p style="margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+<font color="#111111"><font face="aaker"><span style="background: transparent">===============================================================================================</span></font></font></p>
+<ul>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+	<font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><font color="#111111"><span style="text-decoration: none"><span style="background: transparent"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><b>下載
+	</b></span></font></font></span></span></font></span></span></font><span style="font-variant: normal"><font color="#111111"><span style="text-decoration: none"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><b><span style="background: transparent">U-Boot
+	</span></b></span></span></font></font></span></font></span><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="font-variant: normal"><span style="text-decoration: none"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><b>的
+	</b></span></font></font></span></span></span></font><span style="font-variant: normal"><span style="text-decoration: none"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><b>Source
+	code.</b></span></span></font></font></span></span><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><span style="background: transparent">
+	</span></span></font></span>
+	</p>
+</ul>
+<p style="margin-left: 0.98in; margin-bottom: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; text-decoration: none">
+<font color="#000000"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$cd
+$TOP_FOLDER/arrow-sockit-ghrd</span></font></font></font></p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; text-decoration: none">
+<font color="#000000"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$mkdir
+-p software/bootloader &amp;&amp; cd software/bootloader</span></font></font></font></p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; line-height: 120%">
+<span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: transparent">$git
+clone <a href="https://github.com/altera-opensource/u-boot-socfpga">https://github.com/altera-opensource/u-boot-socfpga</a></span></span></span></span></font></font></span></font></span></p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; background: transparent; text-decoration: none">
+<font color="#111111"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$cd
+u-boot-socfpga</span></font></font></font></p>
+<ul>
+	<li><p style="margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent"><a name="docs-internal-guid-5199d87f-7fff-e586-972f-61c975a5c623"></a>
+	<font color="#111111"><span style="background: transparent"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><b>請做以下步驟</b></span></font></font></span></font></p>
+	<ul>
+		<li><p style="margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+		<font face="Noto Serif CJK SC"><span lang="zh-CN"><font color="#c9211e"><span style="background: transparent"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><b>舊的方法</b></span></font></font></span></font></span></font><font face="aaker"><span lang="zh-TW">(</span></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW"><b>要安裝
+		</b></span></font></font></span></font><font face="aaker"><span lang="zh-TW">EDS,
+		</span></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><span lang="zh-CN">現在不需要做了</span></font></span></font><font face="aaker"><span lang="zh-TW">,</span></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><span lang="zh-CN">所以</span></font></span></font><font face="aaker"><span lang="zh-TW">Intel
+		EDS </span></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="Noto Serif CJK SC"><span lang="zh-CN">是不需要安裝的</span></font></span></font><font face="aaker"><span lang="zh-TW">)</span></font></p>
+	</ul>
+</ul>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+<font color="#000000"><strike><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$~/intelFPGA/20.1/embedded/embedded_command_shell.sh
+\</span></font></font></strike></font></p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+<font color="#000000"><strike><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">bsp-create-settings
+\</span></font></font></strike></font></p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+<font color="#000000"><strike><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">--type
+spl \</span></font></font></strike></font></p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+<font color="#000000"><strike><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">--bsp-dir
+software/bootloader \</span></font></font></strike></font></p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+<font color="#000000"><strike><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">--preloader-settings-dir
+&quot;hps_isw_handoff/soc_system_hps_0&quot; \</span></font></font></strike></font></p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<p style="margin-left: 0.98in; margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; background: transparent; text-decoration: none">
+<font color="#000000"><strike><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">--settings
+software/bootloader/settings.bsp</span></font></font></strike></font></p>
+<ul>
+	<ul>
+		<ul>
+			<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+			<font color="#c9211e"><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="background: transparent"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW">新的方法</span></font></font></span></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">(</span></span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="zh-TW">不需要
+			</span></font></font></span></font><font face="aaker"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">EDS)</span></span></span></font></font></font></p>
+		</ul>
+		<p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; background: transparent; text-decoration: none">
+		<font color="#000000"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$cd
+		$TOP_FOLDER/arrow-sockit-ghrd/software/bootloader/u-boot-socfpga/arch/arm/mach-socfpga/cv_bsp_generator</span></font></font></font></p>
+		<p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; background: transparent; text-decoration: none">
+		<font color="#000000"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$python
+		cv_bsp_generator.py -i
+		$TOP_FOLDER/arrow-sockit-ghrd/hps_isw_handoff/sockit_ghrd_hps_0 \</span></font></font></font></p>
+		<p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; background: transparent; text-decoration: none">
+		<font color="#000000"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">-o
+		../../../../board/altera/cyclone5-socdk/qts</span></font></font></font></p>
+	</ul>
+</ul>
+<p style="margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<ul>
+	<ul>
+		<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; line-height: 120%; background: transparent; text-decoration: none">
+		<font color="#c9211e"><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="background: transparent"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="zh-TW">用上面兩種方法都可以</span></font></font></span></span></font><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="en-US"><span style="font-style: normal"><span style="font-weight: normal">../board/altera/cyclone5-socdk/qts</span></span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aaker"><font size="2" style="font-size: 10pt"><span lang="zh-TW">在產生以下檔案</span></font></font></span></font></font></p>
+		<ul>
+			<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; background: transparent; text-decoration: none">
+			<font color="#c9211e"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">iocsr_config.h</span></font></font></font></p>
+			<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; background: transparent; text-decoration: none">
+			<font color="#c9211e"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">pll_config.h</span></font></font></font></p>
+			<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; background: transparent; text-decoration: none">
+			<font color="#c9211e"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">pinmux_config.h</span></font></font></font></p>
+			<li><p style="margin-bottom: 0in; border: none; padding: 0in; font-variant: normal; font-style: normal; font-weight: normal; line-height: 120%; background: transparent; text-decoration: none">
+			<font color="#c9211e"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">sdram_config.h</span></font></font></font></p>
+		</ul>
+	</ul>
+</ul>
+<p style="margin-left: 0.79in; margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; border: none; padding: 0in; line-height: 120%; background: transparent">
+<br/>
+
+</p>
+<ul>
+	<li><p style="margin-bottom: 0in; font-variant: normal; font-style: normal; line-height: 120%; text-decoration: none">
+	<font color="#111111"><font face="aaker"><font size="3" style="font-size: 12pt"><b><span style="background: transparent">Build
+	U-Boot</span></b></font></font></font></p>
+</ul>
+<p style="margin-left: 0.79in; margin-bottom: 0in; font-variant: normal; line-height: 120%; text-decoration: none"><a name="docs-internal-guid-d9f8f92c-7fff-83a3-67fa-cf6bcf26d7e5"></a>
+<font color="#000000"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$cd
+$TOP_FOLDER/arrow-sockit-ghrd/software/bootloader/u-boot-socfpga</span></font></font></font></p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; font-variant: normal; line-height: 120%; text-decoration: none">
+<font color="#000000"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$export
+CROSS_COMPILE=arm-none-linux-gnueabihf-</span></font></font></font></p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; font-variant: normal; line-height: 120%; text-decoration: none">
+<font color="#000000"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$make
+socfpga_cyclone5_defconfig</span></font></font></font></p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; line-height: 120%">
+<br/>
+
+</p>
+<p style="margin-left: 0.79in; margin-bottom: 0in; font-variant: normal; line-height: 120%; text-decoration: none">
+<font color="#000000"><font face="aaker"><font size="2" style="font-size: 10pt"><span style="background: transparent">$make
+-j 48</span></font></font></font></p>
+<ul>
+	<li><p style="margin-bottom: 0in; line-height: 120%"><span style="font-variant: normal"><font color="#303030"><font face="Roboto, Arial, sans-serif"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-style: normal"><b>The
+	following files will be built in the
+	</b></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0in"><font color="#303030"><font face="Roboto, Arial, sans-serif"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><b><span style="background: #ffffff"><em>$TOP_FOLDER/cv_soc_devkit_ghrd/software/bootloader/u-boot-socfpga
+	</span></span></b></span></font></font></font></em><span style="font-variant: normal"><font color="#303030"><font face="Roboto, Arial, sans-serif"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-style: normal"><b>folder:</b></span></span></font></font></font></span></p>
+</ul>
+<table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff">
+	<thead>
+		<tr style="background: transparent">
+			<th bgcolor="#f4f4f4" style="background: #f4f4f4" style="border: none; padding: 0in"><p align="left">
+				<span style="display: inline-block; border: none; padding: 0in"><font color="#222222"><span style="text-decoration: none"><font size="2" style="font-size: 9pt"><b><span style="background: transparent"><strong>File</span></span></b></font></span></font></strong></p>
+			</th>
+			<th bgcolor="#f4f4f4" style="background: #f4f4f4" style="border: none; padding: 0in"><p align="left">
+				<span style="display: inline-block; border: none; padding: 0in"><font color="#222222"><span style="text-decoration: none"><font size="2" style="font-size: 9pt"><b><span style="background: transparent"><strong>Description</span></span></b></font></span></font></strong></p>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background: transparent">
+			<td style="background: transparent" style="border: none; padding: 0in"><p>
+				<font size="2" style="font-size: 9pt">spl/u-boot-spl</font></p>
+			</td>
+			<td style="background: transparent" style="border: none; padding: 0in"><p>
+				<font size="2" style="font-size: 9pt">SPL ELF executable</font></p>
+			</td>
+		</tr>
+		<tr style="background: transparent">
+			<td style="background: transparent" style="border: none; padding: 0in"><p>
+				<font size="2" style="font-size: 9pt">u-boot</font></p>
+			</td>
+			<td style="background: transparent" style="border: none; padding: 0in"><p>
+				<font size="2" style="font-size: 9pt">U-Boot ELF executable</font></p>
+			</td>
+		</tr>
+		<tr style="background: transparent">
+			<td style="background: transparent" style="border: none; padding: 0in"><p>
+				<font size="2" style="font-size: 9pt">u-boot-with-spl.sfp</font></p>
+			</td>
+			<td style="background: transparent" style="border: none; padding: 0in"><p>
+				<font size="2" style="font-size: 9pt">Bootable file: four copies
+				of SPL and one copy on U-Boot image</font></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p><br/>
+<br/>
+
+</p>
+<p>Next to <a href="CycloneVSoC_Kernel.html">Build the Kernel </a><font face="Noto Serif CJK SC"><span lang="zh-CN"><a href="top.html"><font face="Noto Serif CJK SC"><span lang="zh-CN">回首頁</span></font></a></span></font></p>
+<p style="margin-bottom: 0in; line-height: 120%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 120%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 120%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 120%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 120%"><br/>
+
+</p>
+<p><font color="#000000"><font face="aaker"><font size="3" style="font-size: 12pt"><br/>
+</font></font></font><br/>
+<br/>
+
+</p>
+</body>
+</html>

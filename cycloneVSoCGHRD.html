@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
+	<meta name="created" content="2023-04-29T05:35:47.471730964"/>
+	<meta name="changed" content="2023-04-30T11:42:45.689603463"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin-left: 0.79in; margin-right: 0.39in; margin-top: 0.39in; margin-bottom: 0.39in }
+		p { margin-bottom: 0.1in; line-height: 115%; background: transparent }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Cyclone
+V SoC FPGA </span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">參考設計流程</span></font></p>
+<ul>
+	<li><p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Download
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">以下會用到的檔案</span></font></p>
+	<ul>
+		<li><p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Arrow
+		SOCKIT FPGA </span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">參考設計
+		<a href="https://github.com/arrow-socfpga/arrow-sockit-ghrd/archive/refs/heads/sockit-ghrd-19.1.zip">下載網址</a>
+		</span></font>
+		</p>
+		<li><p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Toolchain
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW"><a href="https://developer.arm.com/-/media/Files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz">下載網址</a></span></font></p>
+		<li><p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Kernel
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW"><a href="https://github.com/altera-opensource/linux-socfpga/archive/refs/heads/socfpga-5.15.100-lts.zip">下載網址</a></span></font></p>
+	</ul>
+	<li><p><font face="Noto Serif CJK SC"><span lang="zh-TW">建立
+	</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">SOCKIT
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">的
+	</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Quartus
+	</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">參考設計</span></font></p>
+	<ul>
+		<li><p><font face="Noto Serif CJK SC"><span lang="zh-TW">請解壓縮你下載的
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">SOCKIT
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">的
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Quatus
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">參考設計</span></font></p>
+		<li><p><font face="Noto Serif CJK SC"><span lang="zh-TW">打開
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Quartus
+		Prime Standard → </span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Open
+		Project</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">尋找
+		『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">sockit_ghrd.qpf</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』
+		並開啟</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">.</span></font></font></p>
+		<li><p><font face="Noto Serif CJK SC"><span lang="zh-TW">會看到左上方有一個黃色的
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Bar,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">請按
+		『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Launch
+		IP Upgrade Tool….</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』</span></font></p>
+		<li><p><font face="Noto Serif CJK SC"><span lang="zh-TW">會出現一視窗</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">請按
+		『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Perform
+		Automatic Upgrade</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』→
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">close
+		, </span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">要等一下</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">.
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">跑完了就按
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">close.</span></font></font></p>
+		<li><p><font face="Noto Serif CJK SC"><span lang="zh-TW">在上方工具列找到
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Tools
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">點一下</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">會有下拉選單</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">請選
+		『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Platform
+		Designer</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">並開啟
+		『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">sockit_ghrd.qsys
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』檔案
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">.</span></font></font></p>
+		<li><p><font face="Noto Serif CJK SC"><span lang="zh-TW">這次我們不修改這一個參考設計</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">我們直接按
+		『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Generate
+		HDL</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』→
+		『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Generate</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">等一下</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">會跑久一點
+		→ 『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Close</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』→
+		『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Finish</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">.</span></font></font></p>
+		<li><p><font face="Noto Serif CJK SC"><span lang="zh-TW">回到
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Quartus,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">在左上角的
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Part
+		Number </span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">上按滑鼠右鍵
+		→ 『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Device</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』
+		→ 『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Devices
+		and Pin Options...</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』→
+		『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Program
+		Files</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">將
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Raw
+		Binary File(.rbf) </span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">打勾</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">並按
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">OK
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">退出</span></font></p>
+		<li><p><font face="Noto Serif CJK SC"><span lang="zh-TW">請直接
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">compile
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">整個
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Project,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">跑完後</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">,
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">你會在
+		『</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Project_Path/output
+		files</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">』這一個資料夾裡看到
+		</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">sockit_ghrd.rbf
+		</span></font></font><font face="Noto Serif CJK SC"><span lang="zh-TW">檔</span></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">.</span></font></font></p>
+		<p><font face="Noto Serif CJK SC"><span lang="zh-TW"><a href="top.html">回首頁</a></span></font></p>
+	</ul>
+</ul>
+<p><br/>
+<br/>
+
+</p>
+<p><br/>
+<br/>
+
+</p>
+<p><br/>
+<br/>
+
+</p>
+<p><br/>
+<br/>
+
+</p>
+</body>
+</html>

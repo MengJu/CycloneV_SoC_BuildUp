@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
+	<meta name="created" content="2023-05-02T16:59:47.690490512"/>
+	<meta name="changed" content="2023-05-02T23:20:29.071556041"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.79in }
+		p { margin-bottom: 0.1in; background: transparent; line-height: 115%; background: transparent }
+		h3 { margin-top: 0.1in; margin-bottom: 0.08in; background: transparent; background: transparent; page-break-after: avoid }
+		h3.western { font-family: "Liberation Serif", serif; font-size: 14pt; font-weight: bold }
+		h3.cjk { font-family: "Noto Serif CJK SC"; font-size: 14pt; font-weight: bold }
+		h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }
+		pre { background: transparent; background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "Noto Sans Mono CJK SC", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		td p { background: transparent; background: transparent }
+		th p { background: transparent; font-weight: bold; text-align: center; background: transparent }
+		strong { font-weight: bold }
+		em { font-style: italic }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><h3 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal">
+<font color="#222222"><font face="aakar">Building Linux Kernel</font></font></h3>
+<p style="margin-bottom: 0in; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">This
+section presents how to build the Linux kernel used for the boot
+examples on this page. Refer to
+</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0in"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-style: normal"><u><span style="font-weight: normal"><span style="background: #ffffff"><span style="font-variant: normal"><a href="https://rocketboards.org/foswiki/Main/GettingStarted">https://rocketboards.org/foswiki/Main/GettingStarted</a>
+</span></span></span></u></span></span></font></font></font></span><span style="font-variant: normal"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">for
+complete instructions.</span></span></span></font></font></font></span></p>
+<p style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2">
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">Prepare
+a top folder:</font></font></font></p>
+<p style="font-variant: normal; letter-spacing: normal; orphans: 2; widows: 2">
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN">請確認是否有安裝以下依賴包</span></font></font></font></p>
+<pre class="western" style="border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2; background: #f6f6f6"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">sudo apt-get install gawk wget git-core diffstat unzip texinfo \</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">gcc-multilib  build-essential chrpath socat cpio python python3 \</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">python3-pip python3-pexpect  xz-utils debianutils iputils-ping \</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev  pylint3 xterm \</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">libncurses-dev gawk flex bison openssl libssl-dev</font></font></font></pre><p style="margin-bottom: 0in; border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; line-height: 100%; orphans: 2; widows: 2; background: #f6f6f6">
+<font color="#303030"><font color="#000000"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">sudo
+apt-get install libgmp-dev </span></span></font></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">（編譯的時候要這一個依賴包產生</span></span></span></font></font></span></font><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">gmp.h</span></span></font></font><font color="#000000"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">)</span></span></font></font></font></font></p>
+<p style="margin-bottom: 0in; border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; line-height: 100%; orphans: 2; widows: 2; background: #f6f6f6">
+<font color="#303030"><font color="#000000"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">sudo
+apt-get install libmpc-dev </span></span></font></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font color="#000000"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">（編譯的時候要這一個依賴包產生</span></span></span></font></font></font></span></font><font color="#000000"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">mpc.h)</span></span></font></font></font></font></p>
+<p style="margin-bottom: 0in; border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 100%; orphans: 2; widows: 2; background: #f6f6f6">
+<font color="#000000"><font face="aakar"><font size="2" style="font-size: 10pt">sudo
+apt-get install u-boot-tools</font></font></font></p>
+<p style="margin-bottom: 0in; border: 1px solid #dddddd; padding: 0.02in; line-height: 100%; orphans: 2; widows: 2; background: #f6f6f6">
+<br/>
+
+</p>
+<p style="orphans: 2; widows: 2"><br/>
+<br/>
+
+</p>
+<p style="font-variant: normal; letter-spacing: normal; orphans: 2; widows: 2">
+<font color="#303030"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">假設
+</span></span></span></font></font></span></font><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">Toolchain
+</span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">放在
+</span></span></span></font></font></span></font><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">~/Toolchain,
+</span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">而
+</span></span></span></font></font></span></font><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">Project
+</span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">放在
+</span></span></span></font></font></span></font><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">~/Projects</span></span></font></font></font></p>
+<pre class="western" style="border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2; background: #f6f6f6"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">cd ~/Toolchain</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">export PATH=`pwd`/gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf/bin:$PATH</font></font></font>
+
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">cd ~/Projects/cv_example.sdmmc</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">export TOP_FOLDER=`pwd`</font></font></font>
+
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">rm -rf linux-bin &amp;&amp; mkdir linux-bin</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">export set LINUX_BIN=`pwd`/linux-bin</font></font></font>
+
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">mkdir -p $LINUX_BIN/a9</font></font></font>
+
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">rm -rf linux &amp;&amp; mkdir linux</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">export set LINUX_TOP=`pwd`/linux</font></font></font></pre><p style="margin-bottom: 0in; orphans: 2; widows: 2">
+<br/>
+
+</p>
+<p style="margin-bottom: 0in; orphans: 2; widows: 2"><span style="display: inline-block; border: none; padding: 0in"><span style="font-variant: normal"><font color="#c9211e"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><i><span style="font-weight: normal"><span style="background: #ffffff"><strong>PS:
+Cyclone V </span></span></i></span></font></font></font></span></strong><span lang="zh-CN"><strong><span style="font-variant: normal"><font color="#c9211e"><span style="letter-spacing: normal"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><i><span style="font-weight: normal"><font face="Noto Serif CJK SC">跟跟
+</span></i></span></font></font></span></font></span></strong></span></font><span style="font-variant: normal"><font color="#c9211e"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><i><span style="font-weight: normal"><span style="background: #ffffff"><strong>Arria
+10 SOC </span></span></i></span></font></font></font></span></strong><span lang="zh-CN"><strong><span style="font-variant: normal"><font color="#c9211e"><span style="letter-spacing: normal"><font face="Noto Serif CJK SC"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><i><span style="font-weight: normal"><font face="Noto Serif CJK SC">的作法是一樣的</span></span></i></span></font></font></span></font></span></strong></span></font></p>
+<p style="orphans: 2; widows: 2"><br/>
+<br/>
+
+</p>
+<p style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2">
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">Setup
+the Environment of the Toolchain:</font></font></font></p>
+<pre class="western" style="border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2; background: #f6f6f6"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">cd $LINUX_TOP</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">export ARCH=arm</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">export CROSS_COMPILE=arm-none-linux-gnueabihf-</font></font></font></pre><p style="orphans: 2; widows: 2">
+<br/>
+<br/>
+
+</p>
+<p style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2">
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">Clone
+the Linux git tree to retrieve the code:</font></font></font></p>
+<pre class="western" style="border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2; background: #f6f6f6"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">cd $LINUX_TOP</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">git clone https://github.com/altera-opensource/linux-socfpga linux-socfpga.a9</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">cd linux-socfpga.a9</font></font></font>
+<span style="display: inline-block; border: none; padding: 0in"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="background: transparent"><font color="#996633"># comment out next line to use the latest Linux kernel branch</span></span></font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">git checkout -b test-kernel -t origin/socfpga-5.15.70-lts (</span></span></font></font><font face="Noto Sans Mono CJK SC, monospace"><span lang="zh-CN"><font face="aakar"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">如果你要最新的版本</span></span></span></font></span></font><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">,</span></span></font></font><font face="Noto Sans Mono CJK SC, monospace"><span lang="zh-CN"><font face="aakar"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">請勿執行這一行</span></span></span></font></span></font><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">)</span></span></font></font></font></pre><p style="margin-bottom: 0in; orphans: 2; widows: 2">
+<br/>
+
+</p>
+<p style="margin-bottom: 0in; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">Note
+that most Cyclone V SoC DevKits have a 512MB QSPI flash device, while
+the Linux kernel DTS assumes a 1Gb (128MB) one. If you have the
+standard 512MB one, change the
+file</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0in"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-weight: normal"><span style="background: #ffffff"><em>linux-socfpga/arch/arm/boot/dts/socfpga_cyclone5_socdk.dts
+</span></span></span></span></font></font></font></em><span style="font-variant: normal"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">accordingly
+before building dtbs:</span></span></span></font></font></font></span></p>
+<p style="margin-bottom: 0in; font-variant: normal; orphans: 2; widows: 2">
+<font color="#c9211e"><font face="Noto Serif CJK SC"><span lang="zh-CN"><span style="letter-spacing: normal"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN">下面這一個框框內的內容</span></font></font></span></span></font><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">,
+</span></span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN">是由下下一個框框去修改的</span></font></font></span></font><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">.</span></span></span></font></font></font></p>
+<pre class="western" style="border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; orphans: 2; widows: 2; background: #f6f6f6"><font color="#303030">    <font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">partition@qspi-rootfs {</span></span></font></font></font>
+<font color="#303030">         <font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">/* 56MB for jffs2 data. */</span></span></font></font></font>
+<font color="#303030">         <font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">label = &quot;Flash 0 jffs2 Filesystem&quot;;</span></span></font></font></font>
+<font color="#303030">         <font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">reg = &lt;0x800000 0x3800000&gt;;</span></span></font></font></font>
+<font color="#303030">      <font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">};</span></span></font></font></font></pre><p style="orphans: 2; widows: 2">
+<br/>
+<br/>
+
+</p>
+<p style="font-variant: normal; letter-spacing: normal; orphans: 2; widows: 2">
+<font color="#c9211e"><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">下面框框所執行的指令</span></span></span></font></font></span></font><font face="aakar"><font size="2" style="font-size: 10pt"><span style="font-style: normal"><span style="font-weight: normal">,</span></span></font></font><font face="Noto Serif CJK SC"><span lang="zh-CN"><font face="aakar"><font size="2" style="font-size: 10pt"><span lang="zh-CN"><span style="font-style: normal"><span style="font-weight: normal">是去完成上面框框的內容</span></span></span></font></font></span></font></font></p>
+<pre class="western" style="border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2; background: #f6f6f6"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">sed -i 's/120MB for jffs2 data/56MB for jffs2 data/g' arch/arm/boot/dts/socfpga_cyclone5_socdk.dts</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">sed -i 's/&lt;0x800000 0x7800000&gt;;/&lt;0x800000 0x3800000&gt;;/g' arch/arm/boot/dts/socfpga_cyclone5_socdk.dts</font></font></font></pre><p style="orphans: 2; widows: 2">
+<br/>
+<br/>
+
+</p>
+<p style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2">
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">Build
+the Linux kernel:</font></font></font></p>
+<pre class="western" style="border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2; background: #f6f6f6"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">make socfpga_defconfig</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">make -j 48 zImage Image dtbs modules</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">make -j 48 modules_install INSTALL_MOD_PATH=modules_install</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">rm -rf modules_install/lib/modules/*/build</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">rm -rf modules_install/lib/modules/*/source</font></font></font></pre><p style="orphans: 2; widows: 2">
+<br/>
+<br/>
+
+</p>
+<p style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2">
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">Link
+all the relevant files to $LINUX_BIN</font></font></font></p>
+<pre class="western" style="border: 1px solid #dddddd; padding: 0.02in; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2; background: #f6f6f6"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/zImage $LINUX_BIN/a9/</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/Image $LINUX_BIN/a9/</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/dts/socfpga_cyclone5_socdk.dtb $LINUX_BIN/a9/</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/dts/socfpga_arria10_socdk_sdmmc.dtb $LINUX_BIN/a9/</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/dts/socfpga_arria10_socdk_qspi.dtb $LINUX_BIN/a9/</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">ln -s $LINUX_TOP/linux-socfpga.a9/arch/arm/boot/dts/socfpga_arria10_socdk_nand.dtb $LINUX_BIN/a9/</font></font></font>
+<font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt">ln -s $LINUX_TOP/linux-socfpga.a9/modules_install/lib/modules $LINUX_BIN/a9/</font></font></font></pre><p style="margin-bottom: 0in; orphans: 2; widows: 2">
+<br/>
+
+</p>
+<p style="margin-bottom: 0in; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">The
+following items are copied in the</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0in"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-weight: normal"><span style="background: #ffffff"><em>$LINUX_BIN/a9
+</span></span></span></span></font></font></font></em><span style="font-variant: normal"><font color="#303030"><font face="aakar"><font size="2" style="font-size: 10pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">folder:</span></span></span></font></font></font></span></p>
+<table width="540" cellpadding="2" cellspacing="0" bgcolor="#ffffff" style="background: #ffffff">
+	<col width="206"/>
+
+	<col width="326"/>
+
+	<thead>
+		<tr style="background: transparent">
+			<th width="206" bgcolor="#f4f4f4" style="background: #f4f4f4" style="border: none; padding: 0in"><p align="left">
+				<span style="display: inline-block; border: none; padding: 0in"><font color="#222222"><span style="text-decoration: none"><font face="aakar"><font size="2" style="font-size: 9pt"><b><span style="background: transparent"><strong>Item</span></span></b></font></font></span></font></strong></p>
+			</th>
+			<th width="326" bgcolor="#f4f4f4" style="background: #f4f4f4" style="border: none; padding: 0in"><p align="left">
+				<span style="display: inline-block; border: none; padding: 0in"><font color="#222222"><span style="text-decoration: none"><font face="aakar"><font size="2" style="font-size: 9pt"><b><span style="background: transparent"><strong>Description</span></span></b></font></font></span></font></strong></p>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background: transparent">
+			<td width="206" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">zImage</font></font></p>
+			</td>
+			<td width="326" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">compressed
+				kernel image</font></font></p>
+			</td>
+		</tr>
+		<tr style="background: transparent">
+			<td width="206" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">Image</font></font></p>
+			</td>
+			<td width="326" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">uncompressed
+				kernel image</font></font></p>
+			</td>
+		</tr>
+		<tr style="background: transparent">
+			<td width="206" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">socfpga_cyclone5_socdk.dtb</font></font></p>
+			</td>
+			<td width="326" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">cyclone
+				v device tree blob for both sdmmc and qspi boot</font></font></p>
+			</td>
+		</tr>
+		<tr style="background: transparent">
+			<td width="206" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">socfpga_arria10_socdk_sdmmc.dtb</font></font></p>
+			</td>
+			<td width="326" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">arria 10
+				device tree blob for sdmmc boot</font></font></p>
+			</td>
+		</tr>
+		<tr style="background: transparent">
+			<td width="206" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">socfpga_arria10_socdk_qspi.dtb</font></font></p>
+			</td>
+			<td width="326" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">arria 10
+				device tree blob for qspi boot</font></font></p>
+			</td>
+		</tr>
+		<tr style="background: transparent">
+			<td width="206" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">socfpga_arria10_socdk_nand.dtb</font></font></p>
+			</td>
+			<td width="326" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">arria 10
+				device tree blob for nand boot</font></font></p>
+			</td>
+		</tr>
+		<tr style="background: transparent">
+			<td width="206" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">modules</font></font></p>
+			</td>
+			<td width="326" style="background: transparent" style="border: none; padding: 0in"><p>
+				<font face="aakar"><font size="2" style="font-size: 9pt">kernel
+				loadable modules</font></font></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><font face="aakar">Next
+to Build Root File System </font><font face="Noto Serif CJK SC"><span lang="zh-CN"><a href="top.html"><font face="aakar"><span lang="zh-CN">回首頁</span></font></a></span></font></p>
+</body>
+</html>
