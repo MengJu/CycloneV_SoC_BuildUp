@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07111f">
-  <meta name="description" content="FPGA Taiwan：Cyclone V SoC、Quartus、Linux 與 FPGA 開發學習資源。">
-  <title>FPGA Taiwan｜Cyclone V SoC BuildUp</title>
+  <meta name="description" content="Cyclone V SoC、Quartus、Linux 與 FPGA 開發學習資源。">
+  <title>Cyclone V SoC BuildUp｜FPGA 開發學習資源</title>
   <style>
     :root {
       color-scheme: dark;
@@ -111,12 +111,6 @@
     .resource strong { display: block; font-size: 14px; }
     .resource small { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
     .resource .arrow { color: var(--blue); font-size: 20px; }
-    .community {
-      display: flex; align-items: center; justify-content: space-between; gap: 28px;
-      padding: clamp(24px, 5vw, 42px); border: 1px solid rgba(98,226,208,.2); border-radius: 26px;
-      background: radial-gradient(ellipse at 100% 0, rgba(98,226,208,.13), transparent 50%), var(--surface);
-    }
-    .community p { max-width: 600px; margin: 9px 0 0; color: var(--muted); }
     footer { padding: 28px 0 38px; border-top: 1px solid var(--line); color: #7f91a8; font-size: 12px; }
     .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     @media (max-width: 760px) {
@@ -129,7 +123,6 @@
       .grid { grid-template-columns: repeat(2, 1fr); }
       .card.featured { grid-column: span 2; }
       .resource-list { grid-template-columns: 1fr; }
-      .community { align-items: start; flex-direction: column; }
     }
     @media (max-width: 480px) {
       .container { width: min(100% - 28px, 1120px); }
@@ -146,7 +139,7 @@
 <body>
   <header class="topbar">
     <nav class="nav container" aria-label="主要導覽">
-      <a class="brand" href="#top" aria-label="FPGA Taiwan 首頁">
+      <a class="brand" href="#top" aria-label="Cyclone V SoC BuildUp 首頁">
         <span class="brand-mark" aria-hidden="true">FV</span>
         <span>FPGA Taiwan<small>CYCLONE V · SOC BUILDUP</small></span>
       </a>
@@ -154,7 +147,6 @@
         <a href="#start">快速開始</a>
         <a href="#guides">開發指南</a>
         <a href="#resources">技術資源</a>
-        <a class="nav-cta" href="https://www.facebook.com/groups/TaiwanFPGA/" target="_blank" rel="noreferrer">加入社群 ↗</a>
       </div>
     </nav>
   </header>
@@ -167,7 +159,7 @@
         <p>整理 Cyclone V SoC 開發、Quartus 工具安裝與 Linux 系統建置的實作筆記。從第一個專案開始，逐步掌握軟硬體整合。</p>
         <div class="actions">
           <a class="button button-primary" href="#start">開始探索 <span aria-hidden="true">↓</span></a>
-          <a class="button button-secondary" href="https://www.facebook.com/groups/TaiwanFPGA/" target="_blank" rel="noreferrer">FPGA Taiwan 社群 ↗</a>
+          <a class="button button-secondary" href="https://github.com/MengJu/CycloneV_SoC_BuildUp">查看專案原始碼 ↗</a>
         </div>
         <div class="hero-meta" aria-label="網站主題">
           <span><i class="dot" aria-hidden="true"></i><b>Cyclone V SoC</b></span>
@@ -241,16 +233,6 @@
           <a class="resource" href="https://www.rocketboards.org" target="_blank" rel="noreferrer"><span><strong>RocketBoards</strong><small>Intel SoC FPGA 開發資源</small></span><span class="arrow" aria-hidden="true">↗</span></a>
           <a class="resource" href="./IP/axi_counter.v"><span><strong>AXI Counter 範例</strong><small>Verilog IP 設計參考</small></span><span class="arrow" aria-hidden="true">↗</span></a>
           <a class="resource" href="./Documents/hps_common_board_info.xml"><span><strong>Cyclone V SoC 板卡資料</strong><small>硬體與系統建置參考</small></span><span class="arrow" aria-hidden="true">↗</span></a>
-          <a class="resource" href="https://www.facebook.com/groups/TaiwanFPGA/" target="_blank" rel="noreferrer"><span><strong>FPGA Taiwan 社群</strong><small>與 FPGA 愛好者交流學習</small></span><span class="arrow" aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </section>
-
-    <section aria-label="加入社群">
-      <div class="container">
-        <div class="community">
-          <div><p class="kicker">Learn together</p><h2>一起交流 FPGA 開發</h2><p>歡迎加入 FPGA Taiwan 社群，分享開發經驗、提問並探索更多 FPGA 與 SoC 專案。</p></div>
-          <a class="button button-primary" href="https://www.facebook.com/groups/TaiwanFPGA/" target="_blank" rel="noreferrer">前往 FPGA Taiwan ↗</a>
         </div>
       </div>
     </section>
