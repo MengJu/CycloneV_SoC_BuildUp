@@ -1,0 +1,60 @@
+:root {
+  --site-bg: #07111f;
+  --site-surface: #0d1c2e;
+  --site-surface-2: #122643;
+  --site-line: rgba(165, 190, 220, .16);
+  --site-text: #edf4ff;
+  --site-muted: #9fb0c6;
+  --site-cyan: #62e2d0;
+  --site-blue: #78a9ff;
+  --site-orange: #ffbd72;
+}
+
+html {
+  background: var(--site-bg);
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 82% 4%, rgba(52, 127, 188, .18), transparent 34rem),
+    radial-gradient(ellipse at 8% 30%, rgba(26, 176, 157, .08), transparent 28rem),
+    var(--site-bg);
+  color: var(--site-text);
+  font-family: "Inter", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+}
+
+.topbar,
+.card,
+.resource,
+.community {
+  border-color: var(--site-line);
+}
+
+.brand-mark {
+  background: linear-gradient(135deg, var(--site-cyan), #8bb9ff);
+}
+
+.nav-links a:hover,
+.card-link,
+.kicker,
+.eyebrow,
+.resource .arrow {
+  color: var(--site-cyan);
+}
+
+.button-primary {
+  background: var(--site-cyan);
+  color: #07111f;
+}
+
+.card.featured {
+  background: linear-gradient(120deg, rgba(19,53,66,.96), rgba(17,35,57,.95));
+}
+
+.resource:hover {
+  border-color: rgba(120,169,255,.55);
+}
+
+@media (max-width: 760px) {
+  .nav-links a:not(.nav-cta) { display: none; }
+}
